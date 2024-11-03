@@ -6,17 +6,21 @@ const Register=async(req,res)=>{
 
      const eixtUser=await UserModel.find({email})
      if(!eixtUser){
-        return res.status(303).json({succes:false,message:"User already exist please login"})
+        return res.status(303).json({success:false,message:"User already exist please login"})
      }
+     const imagePath=req.file.filename
       const NewUser=new UserModel({
-        FullName,email,password
+        FullName,
+        email,
+        password,
+        profile:imagePath
       })
       await NewUser.save()
-      return res.status(200).json({succes:true,message:"User resigter succesfully",user:NewUser})
+      return res.status(200).json({success:true,message:"User register succesfully",user:NewUser})
 
     }catch(error){
      console.log(error)
-     return res.status(500).json({succes:false,message:"Internal server error"})
+     return res.status(500).json({success:false,message:"Internal server error"})
     }
 }
 export {Register}
