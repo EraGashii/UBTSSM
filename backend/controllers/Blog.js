@@ -1,5 +1,7 @@
-import upload from "../middleware/multer.js"
+// import upload from "../middleware/multer.js"
 import PostModel from "../models/blog.js"
+import fs from 'fs'
+import path from 'path'
 
 const Create=async(req,res)=>{
     try{
@@ -26,8 +28,13 @@ const deletePost =async(req,res)=>{
         if(!FindPost){
             return res.status(404).json({success:false,message:"Post not found"})
         }
+        if(FindPost.image){
+            const profilepath=path.join('public/images',FindPost.image)
+            fs.promises.unlink(profilepath)
+            .then(()=>console.log('Post image deleted'))
+            .catch(error =>console.log('Error deleting post image',error))
+        }
         const deletedPost=await PostModel.findByIdAndDelete(postId)
-
         return res.status(200).json({success:true,message:"Post deleted successfully",post:deletedPost})
 
     } catch (error) {
@@ -42,6 +49,13 @@ const getposts=async(req,res)=>{
         if(!posts){
             return res.status(404).json({success:false,message:"Post not found"})
         }
+        // if(posts.path){
+        //     const profilepath=path.join('public/images',post.image)
+        //     fs.promises.unlink(profilepath)
+        //     .then(()=>console.log('Post image delete'))
+        //     .catch(error=>console.log('ERROR DELETING POST IMAGE ',error))
+
+        // }
         return res.status(200).json({success:true,posts})
      } catch (error) {
         console.log(error)
