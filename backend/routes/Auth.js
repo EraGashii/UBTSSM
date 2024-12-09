@@ -4,9 +4,11 @@ import upload from '../middleware/multer.js'
 
 const AuthRouters=express.Router()
 
-AuthRouters.post('/register', upload.single('profile'),Register)
+AuthRouters.post("/register", upload.single("profile"),Register)
 AuthRouters.post("/login",Login)
 AuthRouters.post("/logout",Logout)
+
+
 
 
 export default AuthRouters  
