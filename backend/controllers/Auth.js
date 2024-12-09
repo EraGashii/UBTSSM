@@ -6,10 +6,6 @@ const Register = async (req, res) => {
   try {
     const { FullName, email, password} = req.body;
 
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "Profile image is required" });
-    }
-
     const existUser = await UserModel.findOne({ email });
     if (existUser) {
       return res.status(303).json({ success: false, message: "User already exists, please login" });
