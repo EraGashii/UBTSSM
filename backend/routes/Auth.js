@@ -4,19 +4,12 @@ import upload from '../middleware/multer.js';
 
 const AuthRouters = express.Router();
 
-HEAD
-AuthRouters.post("/register", upload.single("profile"),Register)
-AuthRouters.post("/login",Login)
-AuthRouters.post("/logout",Logout)
-
-
-
-
-export default AuthRouters  
-
 // Define authentication routes
 AuthRouters.post('/register', upload.single('profile'), Register);
 AuthRouters.post('/login', Login);
 AuthRouters.post('/logout', Logout);
+
+export default AuthRouters  
+
 
 
