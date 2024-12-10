@@ -7,10 +7,19 @@ import BlogsRouters from './routes/Blog.js';
 import DahbaordRoutes from './routes/Dashboard.js';
 import CommentsRouters from './routes/Comments.js';
 import PublicRoutes from './routes/Public.js';
+import fs from 'fs';
+import path from 'path';
 dotenv.config()
 const PORT = process.env.PORT || 3000;
 const app=express()
 
+const uploadPath = path.resolve('uploads/');
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath);
+  console.log('uploads/ directory created successfully.');
+} else {
+  console.log('uploads/ directory already exists.');
+}
 //mongo connection
 
 DBCon()

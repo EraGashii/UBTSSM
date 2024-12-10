@@ -2,7 +2,10 @@ import UserModel from "../models/user.js"
 import bcryptjs from  'bcryptjs'
 import jwt from "jsonwebtoken";
 
+
 const Register = async (req, res) => {
+//   console.log('req.file:', req.file);
+// console.log('req.body:', req.body);
   try {
     const { FullName, email, password} = req.body;
 
@@ -11,7 +14,9 @@ const Register = async (req, res) => {
       return res.status(303).json({ success: false, message: "User already exists, please login" });
     }
 
-    const imagePath = req.file.filename;
+    // const imagePath = req.file.filename;
+    console.log("req.file:", req.file);
+const imagePath = req.file ? req.file.filename : null;
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     const NewUser = new UserModel({
@@ -58,6 +63,9 @@ const Login=async(req,res)=>{
     return res.status(500).json({success:false,message:"Internal server error"})
   }
 }
+
+
+
 const Logout=async(req,res)=>{
   try{
       res.clearCookie('token')
@@ -67,4 +75,5 @@ const Logout=async(req,res)=>{
     return res.status(500).json({success:false,message:"Internal server error"})
   }
 }
+
 export {Register,Login,Logout}
