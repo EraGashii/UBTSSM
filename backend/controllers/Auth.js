@@ -7,7 +7,7 @@ const Register = async (req, res) => {
 //   console.log('req.file:', req.file);
 // console.log('req.body:', req.body);
   try {
-    const { FullName, email, password } = req.body;
+    const { FullName, email, password} = req.body;
 
     const existUser = await UserModel.findOne({ email });
     if (existUser) {

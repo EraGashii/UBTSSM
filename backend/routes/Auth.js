@@ -9,4 +9,7 @@ AuthRouters.post('/register', upload.single('profile'), Register);
 AuthRouters.post('/login', Login);
 AuthRouters.post('/logout', Logout);
 
-export default AuthRouters;
+export default AuthRouters  
+
+
+

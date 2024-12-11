@@ -4,6 +4,7 @@ import path from 'path';
 
 // Konfigurimi i ruajtjes së skedarëve
 const storage = multer.diskStorage({
+
   destination: (req, file, cb) => {
     // Use absolute path to avoid any path issues
     const uploadPath = path.resolve('uploads/');

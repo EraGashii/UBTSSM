@@ -1,6 +1,20 @@
-import React  from 'react'
+import React, { useEffect }  from 'react'
 
 export default function Post(){
+
+  useEffect(()=>{
+
+    SinglePost()
+
+  },[])
+  const SinglePost = async()=>{
+    try {
+      const response = await get('')
+    } catch (error) {
+      
+    }
+  }
+
     return(
       <> 
       <div className="container text-white mt-5 mb-5">
