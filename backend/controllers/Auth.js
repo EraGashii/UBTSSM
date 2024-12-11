@@ -34,11 +34,12 @@ const imagePath = req.file ? req.file.filename : null;
   }
 };
 
-const Login=async(req,res)=>{
-  try{ 
-    const {email,password}=req.body
-    if(!email || !password){
-      return res.status(400).json({success:false,message:"All fields are required"});
+const Login = async (req, res) => {
+  try {
+    console.log("req.body:", req.body); // Debugging line
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
     const FindUser=await UserModel.findOne({email})
 
