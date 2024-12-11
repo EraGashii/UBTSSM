@@ -10,6 +10,7 @@ import PublicRoutes from './routes/Public.js';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors'
+
 dotenv.config()
 const PORT = process.env.PORT || 3000;
 const app=express()
