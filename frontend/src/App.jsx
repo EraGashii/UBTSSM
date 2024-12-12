@@ -11,13 +11,14 @@ import Dashboard from './pages/Admin/Dashboard'
 import User from './pages/Admin/User'
 import Addpost from './pages/Admin/Addpost'
 import Allpost from './pages/Admin/Allpost'
-
+import {Toaster} from 'react-hot-toast'
 
 
 export default function App(){
     return(
       <>
       <BrowserRouter>
+      <Toaster/>
       <Routes>
       <Route path='/' element={<UserLayout/>}>
         <Route index element={<Home/>}/>

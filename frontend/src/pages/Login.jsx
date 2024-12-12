@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { post } from "../services/Endpoint";
+import toast from "react-hot-toast";
+import { useDispatch } from 'react-redux';
 
 export default function Login() {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [value, setValue] = useState({
         email: "",
         password: ""
@@ -14,10 +19,20 @@ export default function Login() {
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Login submitted with:", value);
-        // Add your login logic here (e.g., API call)
+    const handleSubmit = async(e) => {
+        try {
+            e.preventDefault();
+            const response = await post('/auth/login', value)
+            const data = response.data
+            if (response.status === 200) {
+                navigate('/')
+                toast.success(data.message)
+                dispatch(SetUser(data.user))
+            }
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }    
     };
 
     return (

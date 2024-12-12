@@ -7,13 +7,14 @@ const BaseUrl = 'http://localhost:5173';
 export default function RecentPost(){
     const navgiate= useNavigate();
     const [post,setPost]=useState([])
-    const handleNavigate = () => {
-      navigate('/post/0938');
+
+    const handleNavigate = (id) => {
+      navigate(`/post/${id}`);
     };
     
     const getpost=async()=>{
       try {
-        const response = await get('blog/getposts');
+        const response = await get('/blog/getposts');
         const data = response.data;
         setPost(data.posts)
         console.log(data)
@@ -45,7 +46,7 @@ export default function RecentPost(){
                 <div className="card-body bg-dark text-white">
                   <h5 className="card-title">{post.title}</h5>
                   <p className="card-text">{post.desc}</p>
-                  <button className="btn btn-primary w-100 mt-3" onClick={handlenvaigte}>  Read More  </button>    
+                  <button className="btn btn-primary w-100 mt-3" onClick={()=>handlenvaigte(post._id)}>  Read More  </button>    
                 </div>
             </div>
           </div>
