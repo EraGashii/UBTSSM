@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { post } from "../services/Endpoint";
 import toast from "react-hot-toast";
 import { useDispatch } from 'react-redux';
+import { SetUser } from '../redux/AutSlice'; // Importoni SetUser nga Redux Slice
 
 export default function Login() {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [value, setValue] = useState({
         email: "",
         password: ""
@@ -19,20 +20,31 @@ export default function Login() {
         });
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // Validimi i input-it
+        if (!/\S+@\S+\.\S+/.test(value.email)) {
+            toast.error('Invalid email format.');
+            return;
+        }
+        if (value.password.length < 8) {
+            toast.error('Password must be at least 8 characters.');
+            return;
+        }
+
         try {
-            e.preventDefault();
-            const response = await post('/auth/login', value)
-            const data = response.data
+            const response = await post('/auth/login', value);
+            const data = response.data;
+
             if (response.status === 200) {
-                navigate('/')
-                toast.success(data.message)
-                dispatch(SetUser(data.user))
+                toast.success(data.message || 'Login successful!');
+                dispatch(SetUser(data.user)); // Vendos përdoruesin në Redux
+                navigate('/'); // Ridrejtoni pas login-it të suksesshëm
             }
-            console.log(data)
         } catch (error) {
-            console.log(error)
-        }    
+            console.error('Login error:', error.response?.data || error.message);
+            toast.error(error.response?.data?.message || 'Login failed, please try again.');
+        }
     };
 
     return (
