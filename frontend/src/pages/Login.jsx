@@ -59,7 +59,7 @@ export default function Login() {
                             width="32"
                             height="32"
                         />
-                        <span className="h4 mb-0 fw-bold">CodeByZahid</span>
+                        <span className="h4 mb-0 fw-bold">UBTSSM</span>
                     </Link>
                     <div className="card shadow-sm w-100" style={{ maxWidth: '400px' }}>
                         <div className="card-body p-4">

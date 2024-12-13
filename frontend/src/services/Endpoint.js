@@ -1,5 +1,4 @@
-
-// import axios from 'axios';
+import axios from 'axios';
 
 // Backend API URL
 export const BaseUrl = 'http://localhost:8000'; // Replace with your backend's URL

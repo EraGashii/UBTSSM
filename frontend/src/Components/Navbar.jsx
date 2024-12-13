@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,7 +30,7 @@ export default function Navbar(){
     return(
      <>
      <nav className="navbar d-flex justify-content-between  align-items-center p-3">
-     <Link to={'/'}><h1 className="mx-5 text-white fs-2 fw-bold">Eraa</h1></Link>
+     <Link to={'/'}><h1 className="mx-5 text-white fs-2 fw-bold">UBTSSM</h1></Link>
      <div className="d-flex align-items-center">
       {!user ? <Link to={'/login'}><button className="btn_sign mx-3">Sign in</button></Link>:(
         <div className="dropdown">
