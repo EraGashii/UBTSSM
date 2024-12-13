@@ -2,27 +2,24 @@ import express from 'express';
 import dotenv from 'dotenv';
 import DBCon from './utils/db.js';
 import AuthRouters from './routes/Auth.js';
-import cookieParser from 'cookie-parser';
 import BlogsRouters from './routes/Blog.js';
-import DahbaordRoutes from './routes/Dashboard.js';
-import CommentsRouters from './routes/Comments.js';
-import PublicRoutes from './routes/Public.js';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import fs from 'fs';
 import path from 'path';
-import cors from 'cors';
 
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const app = express();
 
 // CORS middleware should be applied before routes
 app.use(cors({
-  origin: 'http://localhost:5173',  // Frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Allowed methods
-  credentials: true,  // Allow cookies
+  origin: 'http://localhost:5173', // Frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,  // Allow cookies to be sent with requests
 }));
 
-// Make sure "uploads" folder exists
+// Ensure "uploads" directory exists
 const uploadPath = path.resolve('uploads/');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath);
@@ -31,7 +28,7 @@ if (!fs.existsSync(uploadPath)) {
   console.log('uploads/ directory already exists.');
 }
 
-// Connect to MongoDB
+// Database connection
 DBCon();
 
 app.use(express.static('public'));
@@ -39,14 +36,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("hello from backend");
-});
 app.use('/auth', AuthRouters);
-app.use('/Blog', BlogsRouters);
-app.use('/dahbaord', DahbaordRoutes);
-app.use('/comment', CommentsRouters);
-app.use('/public', PublicRoutes);
+app.use('/blog', BlogsRouters);
 
 // Start server
 app.listen(PORT, () => {

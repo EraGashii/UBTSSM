@@ -1,27 +1,39 @@
 import React, { useEffect, useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { get } from '../services/Endpoint';
-const BaseUrl = 'http://localhost:5173';
+// const BaseUrl = 'http://localhost:5173';nashta osht mir
+const BaseUrl = 'http://localhost:8000';
 
 
 export default function RecentPost(){
-    const navgiate= useNavigate();
+    const navigate= useNavigate();
     const [post,setPost]=useState([])
 
     const handleNavigate = (id) => {
       navigate(`/post/${id}`);
     };
     
-    const getpost=async()=>{
+    // const getpost=async()=>{
+    //   try {
+    //     const response = await get('/blog/getposts');
+    //     const data = response.data;
+    //     setPost(data.posts)
+    //     console.log(data)
+    //   }catch(error){
+    //    console.log(error)
+    //   }
+    // }
+    const getpost = async () => {
       try {
         const response = await get('/blog/getposts');
         const data = response.data;
-        setPost(data.posts)
-        console.log(data)
-      }catch(error){
-       console.log(error)
+        setPost(data.posts);
+        console.log(data);
+      } catch (error) {
+        console.log('Error fetching posts:', error);
       }
-    }
+    };
+    
     useEffect(()=>{
     
       getpost()
@@ -46,7 +58,10 @@ export default function RecentPost(){
                 <div className="card-body bg-dark text-white">
                   <h5 className="card-title">{post.title}</h5>
                   <p className="card-text">{post.desc}</p>
-                  <button className="btn btn-primary w-100 mt-3" onClick={()=>handlenvaigte(post._id)}>  Read More  </button>    
+  
+                  <button className="btn btn-primary w-100 mt-3" onClick={() => handleNavigate(post._id)}>  Read More  </button>
+                  
+
                 </div>
             </div>
           </div>

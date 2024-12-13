@@ -1,52 +1,60 @@
-// import React  from 'react'
-
-// export default function Addpost(){
-//     return(
-//     <div>
-//         <h1 className='text-white'>Addpost</h1>
-//     </div>
-//     )
-// }
 import React, { useState } from 'react';
-// import { post } from '../../services/Endpoint';
-// import toast from 'react-hot-toast';
+import { post } from '../../services/Endpoint'; // Assuming 'post' is defined correctly in your services/Endpoint.js
+import toast from 'react-hot-toast';
+
 
 export default function AddPost() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
-  console.log('image',image)
 
-  const handleSumbit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();  // Prevent page reload on form submit
+
+    // Ensure data is available before sending
+    if (!title || !description || !image) {
+      toast.error('Please fill in all fields and upload an image');
+      return;
+    }
+
     try {
       const formData = new FormData();
+
+      // Append data to FormData object
       if (image) {
         formData.append('postimg', image);
       }
       formData.append('title', title);
       formData.append('desc', description);
-      
-  
+
+      // Log formData for debugging
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
-      
-      const response = await post('/blog/create', formData);
+
+      // Make the POST request with credentials
+      const response = await post('/blog/create', formData, {
+        withCredentials: true,  // Ensures cookies (like authentication token) are sent with the request
+      });
+
       const data = response.data;
+
       if (data.success) {
-        toast.success(data.message)
-        setTitle('')
-        setImage(null)
-        setDescription('')
+        toast.success(data.message || 'Post created successfully');
+        // Reset form fields after successful post
+        setTitle('');
+        setImage(null);
+        setDescription('');
+      } else {
+        toast.error(data.message || 'Failed to create post');
       }
-      console.log(data);
+
+      console.log(data);  // Log response for debugging
     } catch (error) {
+      toast.error('An error occurred while submitting the post');
       console.log(error);
     }
   };
-  
-
 
   return (
     <div className="container">
@@ -57,16 +65,16 @@ export default function AddPost() {
               <h2 className="text-center mb-0">Add New Post</h2>
             </div>
             <div className="card-body p-4">
-              <div   method='post' encType='multipart/form-data'>
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className="mb-4">
                   <label htmlFor="postImage" className="form-label">Upload Image</label>
                   <input 
-  type="file" 
-  className="form-control" 
-  id="image" 
-  onChange={(e) => setImage(e.target.files[0])} 
-/>
-
+                    type="file" 
+                    className="form-control" 
+                    id="image" 
+                    onChange={(e) => setImage(e.target.files[0])} 
+                    required
+                  />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="postTitle" className="form-label">Title</label>
@@ -93,9 +101,9 @@ export default function AddPost() {
                   ></textarea>
                 </div>
                 <div className="d-grid">
-                  <button type="submit" className="btn btn-primary btn-lg" onClick={handleSumbit}>Submit Post</button>
+                  <button type="submit" className="btn btn-primary btn-lg">Submit Post</button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
