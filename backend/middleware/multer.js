@@ -1,21 +1,24 @@
-
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
-// Konfigurimi i ruajtjes së skedarëve
+// Ensure the uploads directory exists
+const uploadDir = path.resolve('uploads/');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Configure storage
 const storage = multer.diskStorage({
-
   destination: (req, file, cb) => {
-    // Use absolute path to avoid any path issues
-    const uploadPath = path.resolve('uploads/');
-    cb(null, uploadPath); // Dosja ku ruhen skedarët
+    cb(null, uploadDir); // Directory where files are stored
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${Date.now()}-${file.originalname}`); // Unique filename
   },
 });
 
-// Filtri për të pranuar vetëm imazhe
+// File filter to accept only images
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image/')) {
     cb(null, true);

@@ -15,14 +15,14 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const corsOptions = {
-  origin: 'http://localhost:5173', // Replace with your frontend URL
-  credentials: true,
-};
+// CORS middleware should be applied before routes
+app.use(cors({
+  origin: 'http://localhost:5173',  // Frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Allowed methods
+  credentials: true,  // Allow cookies
+}));
 
-app.use(cors(corsOptions)); // Use the correct variable name here
-
-// Ensure the "uploads" directory exists
+// Make sure "uploads" folder exists
 const uploadPath = path.resolve('uploads/');
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath);
@@ -31,7 +31,7 @@ if (!fs.existsSync(uploadPath)) {
   console.log('uploads/ directory already exists.');
 }
 
-// MongoDB connection
+// Connect to MongoDB
 DBCon();
 
 app.use(express.static('public'));
@@ -48,7 +48,7 @@ app.use('/dahbaord', DahbaordRoutes);
 app.use('/comment', CommentsRouters);
 app.use('/public', PublicRoutes);
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
   console.log(`App is running on Port ${PORT}`);
 });

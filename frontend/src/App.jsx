@@ -25,7 +25,7 @@ export default function App(){
         <Route path='post/:id' element={<Post/>}></Route>
         <Route path='profile/:id' element={<Profile/>}></Route>
         </Route>
-        <Route path='/dahbaord' element={<AdminLayout/>}>
+        <Route path='/dashboard' element={<AdminLayout/>}>
         <Route   index element={<Dashboard/>}/>
         <Route   path='addpost' element={<Addpost/>}/>
         <Route   path='users' element={<User/>}/>

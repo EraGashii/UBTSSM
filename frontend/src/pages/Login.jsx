@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { post } from "../services/Endpoint";
+import { post } from "../services/Endpoint"; // Assuming this is where your post function is
 import toast from "react-hot-toast";
 import { useDispatch } from 'react-redux';
 import { SetUser } from '../redux/AutSlice'; // Importoni SetUser nga Redux Slice
@@ -33,7 +33,7 @@ export default function Login() {
         }
 
         try {
-            const response = await post('/auth/login', value);
+            const response = await post('/auth/login', value, { credentials: 'include' }); // Add credentials here
             const data = response.data;
 
             if (response.status === 200) {
@@ -76,6 +76,8 @@ export default function Login() {
                                         placeholder="name@company.com"
                                         required
                                         value={value.email}
+                                        autoFocus // Autofocus on the email input
+                                        aria-describedby="emailHelp"
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -89,6 +91,7 @@ export default function Login() {
                                         id="password"
                                         placeholder="••••••••"
                                         required
+                                        aria-describedby="passwordHelp"
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100">Sign in</button>
