@@ -20,7 +20,7 @@ export default function Navbar(){
         
         if (response.status == 200) {
           navigate('/')
-          dispatch(removeUser())
+          dispatch(RemoveUser())
           toast.success(data.message)
         }
       } catch (error) {

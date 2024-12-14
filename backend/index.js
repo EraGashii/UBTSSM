@@ -7,6 +7,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import fs from 'fs';
 import path from 'path';
+import UsersRouters from './routes/Users.js'; // Import the Users route
+
 
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -18,6 +20,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,  // Allow cookies to be sent with requests
 }));
+
 
 // Ensure "uploads" directory exists
 const uploadPath = path.resolve('uploads/');
@@ -38,6 +41,7 @@ app.use(express.json());
 // Routes
 app.use('/auth', AuthRouters);
 app.use('/blog', BlogsRouters);
+app.use('/users', UsersRouters);  // Register the Users route
 
 // Start server
 app.listen(PORT, () => {
