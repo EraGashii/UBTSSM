@@ -16,7 +16,7 @@ export default function Sidebar(){
             </li>
             <li className='nav-item mb-3'>
                 <Link to={'/dashboard/addpost'} className='nav-link text-white'>
-              <FaPlusSquare className="me-2" /> add post
+              <FaPlusSquare className="me-2" /> Add Employees
               </Link>
             </li>
             <li className='nav-item mb-3'>

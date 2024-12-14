@@ -42,7 +42,7 @@ export default function Dashboard() {
           <div className="col-md-4 col-lg-4 col-sm-4 col-12">
             <div className="card bg-primary text-white mb-4">
               <div className="card-body">
-                <h5 className="card-title">Total Users</h5>
+                <h5 className="card-title">Total Employees</h5>
                 <p className="card-text">{users?.length || 0}</p> {/* Safe check with optional chaining */}
               </div>
             </div>
@@ -50,7 +50,7 @@ export default function Dashboard() {
           <div className="col-md-4 col-lg-4 col-sm-4 col-12">
             <div className="card bg-success text-white mb-4">
               <div className="card-body">
-                <h5 className="card-title">Total Posts</h5>
+                <h5 className="card-title">Total Departaments</h5>
                 <p className="card-text">{post?.length || 0}</p> {/* Safe check with optional chaining */}
               </div>
             </div>
@@ -58,7 +58,7 @@ export default function Dashboard() {
           <div className="col-md-4 col-lg-4 col-sm-4 col-12">
             <div className="card bg-warning text-white mb-4">
               <div className="card-body">
-                <h5 className="card-title">Total Comments</h5>
+                <h5 className="card-title">Monthly Pay</h5>
                 <p className="card-text">{comments?.length || 0}</p> {/* Safe check with optional chaining */}
               </div>
             </div>
