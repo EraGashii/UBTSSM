@@ -27,10 +27,6 @@ export default function Login() {
             toast.error('Invalid email format.');
             return;
         }
-        if (value.password.length < 8) {
-            toast.error('Password must be at least 8 characters.');
-            return;
-        }
 
         try {
             const response = await post('/auth/login', value, { credentials: 'include' }); // Add credentials here

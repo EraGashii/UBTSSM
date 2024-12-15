@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
 import DBCon from './utils/db.js';
@@ -8,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import fs from 'fs';
 import path from 'path';
 import UsersRouters from './routes/Users.js'; // Import the Users route
+import profileRoutes from "./routes/profileRoutes.js";
 
 
 dotenv.config();
@@ -47,3 +49,23 @@ app.use('/users', UsersRouters);  // Register the Users route
 app.listen(PORT, () => {
   console.log(`App is running on Port ${PORT}`);
 });
+
+//UPDATE PROFILE
+
+dotenv.config(); // Load environment variables
+
+
+// Connect to the database
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
+
+// Middleware
+app.use(express.json()); // To parse JSON body
+app.use('uploads/', express.static('uploads')); // Serve uploaded images as static files
+
+// Use the profile routes
+app.use('routes/profileRoutes.js', profileRoutes); // Authenticate middleware for profile routes
+
+
+
