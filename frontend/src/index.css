@@ -191,3 +191,23 @@ body {
 .profile-button:hover {
   background-color: #2B6CB0;
 }
+
+.custom-btn-delete {
+  background-color: #ADD8E6;  /* Light Blue color */
+  color: black;
+  border: none;
+}
+
+.custom-btn-update {
+  background-color: #1E90FF;  /* Another shade of Blue */
+  color: white;
+  border: none;
+}
+
+.custom-btn-delete:hover {
+  background-color: #87CEEB;  /* Slightly darker blue on hover */
+}
+
+.custom-btn-update:hover {
+  background-color: #4682B4;  /* Slightly darker blue on hover */
+}

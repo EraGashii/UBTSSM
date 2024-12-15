@@ -1,23 +1,27 @@
-import PostModel from "../models/blog.js"
-import UserModel from "../models/user.js"
-import fs from 'fs'
-import path from 'path'
+import UserModel from "../models/user.js";
+import PostModel from "../models/blog.js";
+import CommentModel from "../models/comment.js"; // Import Comment model
 
-
-const Getalldate=async(req,res)=>{
+const Getalldate = async (req, res) => {
     try {
-        const Users=await UserModel.find()
-        const Posts=await PostModel.find()
-        const Comments = await CommentModel.find()    
-        if(!Users && !Posts){ 
-            return res.status(404).json({success:false,message:"Not Data Found"})
+        const Users = await UserModel.find();
+        const Posts = await PostModel.find();
+        const Comments = await CommentModel.find(); 
+
+        // Check if all datasets are empty
+        if (!Users.length && !Posts.length && !Comments.length) { 
+            return res.status(404).json({ success: false, message: "No data found" });
         }
-       res.status(200).json({success:true,Users,Posts,Comments})
+
+        res.status(200).json({ success: true, Users, Posts, Comments });
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({success:false,message:"Internal server error"})
+        console.log(error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
-}
+};
+
+export { Getalldate };
+
 const GetUser=async(req,res)=>{
     try {
         const Users=await UserModel.find()

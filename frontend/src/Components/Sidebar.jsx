@@ -21,12 +21,12 @@ export default function Sidebar(){
             </li>
             <li className='nav-item mb-3'>
                 <Link to={'/dashboard/users'} className='nav-link text-white'>
-              <FaUsers className="me-2" /> All Users
+              <FaUsers className="me-2" /> Employees
               </Link>
             </li>
             <li className='nav-item mb-3'>
                 <Link to={'/dashboard/allposts'} className='nav-link text-white'>
-              <FaFileAlt className="me-2" /> All Posts
+              <FaFileAlt className="me-2" /> Employees Datas 
               </Link>
             </li>
             </ul>
