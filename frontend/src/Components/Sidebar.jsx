@@ -15,20 +15,27 @@ export default function Sidebar(){
               </Link>
             </li>
             <li className='nav-item mb-3'>
-                <Link to={'/dashboard/addpost'} className='nav-link text-white'>
-              <FaPlusSquare className="me-2" /> Add Employees
-              </Link>
+            <Link to="/dashboard/manage-employees" className="nav-link text-white">
+            <FaUsers className="me-2" /> Manage Employees
+             </Link>
             </li>
+            
             <li className='nav-item mb-3'>
                 <Link to={'/dashboard/users'} className='nav-link text-white'>
-              <FaUsers className="me-2" /> Employees
+              <FaUsers className="me-2" /> Users
               </Link>
             </li>
+      
             <li className='nav-item mb-3'>
                 <Link to={'/dashboard/allposts'} className='nav-link text-white'>
               <FaFileAlt className="me-2" /> Employees Datas 
               </Link>
-            </li>
+            </li>  
+            <li>
+            <Link to={'/dashboard/department'} className='nav-link text-white'>
+             <FaFileAlt className="me-2" /> Department
+             </Link>
+             </li>
             </ul>
     </div>
     </div>
