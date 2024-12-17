@@ -12,9 +12,8 @@ import UsersRouters from './routes/Users.js';
 import profileRoutes from './routes/profileRoutes.js';
 import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
-import LeaveRoutes from './routes/LeaveRoutes.js'
-
-
+import LeaveRoutes from './routes/LeaveRoutes.js';
+import SalariesRoutes from './routes/salaries.js'; // <-- Add this import for salaries
 
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -41,6 +40,7 @@ app.use(express.static('public'));
 app.use(cookieParser());
 app.use(express.json()); // To parse JSON body
 app.use('/uploads', express.static('uploads')); // Serve uploaded images
+app.use(express.json());
 
 
 // Connect to the database
@@ -50,11 +50,12 @@ DBCon();
 app.use('/auth', AuthRouters);
 app.use('/blog', BlogsRouters);
 app.use('/users', UsersRouters);
-app.use('/profile', profileRoutes); // Corrected path
+app.use('/profile', profileRoutes);
 app.use('/employee', EmployeeRouters);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);
+app.use('/api/salaries', SalariesRoutes); // <-- Add this line for salary routes
 
 // Start server
 app.listen(PORT, () => {
