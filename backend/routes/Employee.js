@@ -74,4 +74,55 @@ router.post('/add', upload.single('image'), async (req, res) => {
   }
 });
 
+// PUT /employee/update/:id - Update an existing employee
+router.put('/update/:id', upload.single('image'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      email,
+      employeeID,
+      dateOfBirth,
+      gender,
+      maritalStatus,
+      designation,
+      department,
+      salary,
+      role,
+    } = req.body;
+
+    // Find the employee by ID
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({ success: false, message: 'Employee not found' });
+    }
+
+    // Update the employee data
+    employee.name = name || employee.name;
+    employee.email = email || employee.email;
+    employee.employeeID = employeeID || employee.employeeID;
+    employee.dateOfBirth = dateOfBirth || employee.dateOfBirth;
+    employee.gender = gender || employee.gender;
+    employee.maritalStatus = maritalStatus || employee.maritalStatus;
+    employee.designation = designation || employee.designation;
+    employee.department = department || employee.department;
+    employee.salary = salary || employee.salary;
+    employee.role = role || employee.role;
+
+    // If an image is provided, update the image
+    if (req.file) {
+      employee.image = `/uploads/${req.file.filename}`;
+    }
+
+    // Save the updated employee document
+    const updatedEmployee = await employee.save();
+
+    res.status(200).json({ success: true, message: 'Employee updated successfully', employee: updatedEmployee });
+  } catch (error) {
+    console.error('Error updating employee:', error.message);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+});
+
 export default router;
