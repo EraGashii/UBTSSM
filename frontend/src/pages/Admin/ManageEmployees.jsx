@@ -95,6 +95,7 @@ export default function ManageEmployees() {
               employeeID: '',
               dateOfBirth: '',
               department: '',
+              password: '',
               image: null,
             });
           }}
@@ -145,6 +146,15 @@ export default function ManageEmployees() {
             className="form-control mb-2"
             onChange={handleChange}
           />
+          <input
+  type="password"
+  placeholder="Password"
+  name="password"
+  value={formData.password}
+  className="form-control mb-2"
+  onChange={handleChange}
+/>
+
           <input type="file" className="form-control mb-3" onChange={handleFileChange} />
           <button type="submit" className="btn btn-primary">
             {selectedEmployee ? 'Update Employee' : 'Submit'}
