@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import LeaveManagement from './LeaveManagement'; // Import LeaveManagement component
+
 
 export default function ManageEmployees() {
   const [employees, setEmployees] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [showLeaveManagement, setShowLeaveManagement] = useState(false); // Control leave UI visibility
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -77,7 +81,12 @@ export default function ManageEmployees() {
   };
 
   const handleAction = (action, emp) => {
-    if (action === 'edit') handleEdit(emp);
+    if (action === 'edit') {
+      handleEdit(emp);
+    }else if (action === 'leave') {
+      setSelectedEmployee(emp); // Pass employee data
+      setShowLeaveManagement(true); // Show leave management for this employee
+    }
   };
 
   return (
@@ -217,6 +226,15 @@ export default function ManageEmployees() {
               </tr>
             ))}
           </tbody>
+          {showLeaveManagement && selectedEmployee && (
+         <LeaveManagement
+          employeeID={selectedEmployee.employeeID} // Pass employeeID to LeaveManagement
+           onBack={() => {
+              setShowLeaveManagement(false); // Hide LeaveManagement
+               setSelectedEmployee(null); // Clear selected employee
+             }}
+           />
+        )}
         </table>
       )}
     </div>

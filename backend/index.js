@@ -12,6 +12,7 @@ import UsersRouters from './routes/Users.js';
 import profileRoutes from './routes/profileRoutes.js';
 import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
+import LeaveRoutes from './routes/LeaveRoutes.js'
 
 
 
@@ -53,6 +54,7 @@ app.use('/profile', profileRoutes); // Corrected path
 app.use('/employee', EmployeeRouters);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
+app.use('/leave', LeaveRoutes);
 
 // Start server
 app.listen(PORT, () => {
