@@ -1,5 +1,6 @@
 import UserModel from '../models/user.js'; // Assuming you have a User model
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 //const path = require('path');
 
 // Function to update the profile

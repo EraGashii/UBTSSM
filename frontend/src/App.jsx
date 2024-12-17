@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Post from './pages/Post';
@@ -12,7 +11,6 @@ import User from './pages/Admin/User';
 import Allpost from './pages/Admin/Allpost';
 import ManageDepartments from './pages/Admin/ManageDepartments';
 import ManageEmployees from './pages/Admin/ManageEmployees';
-
 import { Toaster } from 'react-hot-toast';
 
 export default function App() {
@@ -29,7 +27,6 @@ export default function App() {
 
         {/* Admin Routes */}
         <Route path="/dashboard" element={<AdminLayout />}>
-        
           <Route index element={<Dashboard />} />
           <Route path="users" element={<User />} />
           <Route path="allposts" element={<Allpost />} />

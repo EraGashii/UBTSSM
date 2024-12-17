@@ -1,6 +1,8 @@
 // routes/authRoutes.js
 const express = require('express');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
+
 const User = require('../models/user'); // Adjust this path to your User model location
 const router = express.Router();
 

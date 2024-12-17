@@ -1,7 +1,16 @@
 import React from 'react';
 import { FaUser, FaLock, FaCamera } from 'react-icons/fa';
-///testttt
+import { useSelector } from 'react-redux'; // Access Redux store
+
 export default function Profile() {
+  // Access user data from Redux
+  const user = useSelector((state) => state.auth.user); // Assuming your user data is stored in 'auth' slice
+
+  // If the user is not logged in or is not a 'user', show a message
+  if (!user || user.role !== 'user') {
+    return <p>You do not have permission to update the profile.</p>;
+  }
+
   return (
     <div className="profile-container">
       <h1 className="profile-title">Update Profile</h1>
@@ -9,7 +18,7 @@ export default function Profile() {
         <div className="profile-image-section">
           <label htmlFor="profileImage" className="profile-image-label">
             <img 
-              src="https://via.placeholder.com/150" 
+              src={user.profile ? `${BaseUrl}/images/${user.profile}` : "https://via.placeholder.com/150"} 
               alt="User Profile" 
               className="profile-image"
             />
@@ -29,6 +38,7 @@ export default function Profile() {
             type="text"
             placeholder="Update Name"
             className="profile-input"
+            defaultValue={user.name} // Show current name
           />
         </div>
 
