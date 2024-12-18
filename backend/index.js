@@ -13,7 +13,7 @@ import profileRoutes from './routes/profileRoutes.js';
 import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
 import LeaveRoutes from './routes/LeaveRoutes.js';
-import SalariesRoutes from './routes/salaries.js'; // <-- Add this import for salaries
+import SalariesRoutes from './routes/salaries.js';
 
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -55,7 +55,7 @@ app.use('/employee', EmployeeRouters);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);
-app.use('/api/salaries', SalariesRoutes); // <-- Add this line for salary routes
+app.use('/salaries', SalariesRoutes); // <-- Add this line for salary routes
 
 // Start server
 app.listen(PORT, () => {

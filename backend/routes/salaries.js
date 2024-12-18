@@ -2,10 +2,10 @@
 import express from 'express';
 import Salary from '../models/Salary.js'; // Import the Salary model
 
-const router = express.Router();
+const SalariesRoutes = express.Router();
 
 // POST route to add a salary
-router.post('/', async (req, res) => {
+SalariesRoutes.post('/', async (req, res) => {
   try {
     const { department, employee, basicSalary, allowances, deductions, payDate } = req.body;
 
@@ -33,4 +33,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-export default router;
+export default SalariesRoutes;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import toast from 'react-hot-toast';
 const AddSalaryForm = () => {
   const [formData, setFormData] = useState({
     department: '',
@@ -17,13 +17,14 @@ const AddSalaryForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/salaries', {
+      const response = await fetch('http://localhost:8000/salaries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+    
       if (response.ok) {
-        alert('Salary added successfully');
+        toast.success('Salary added successfully');
         setFormData({
           department: '',
           employee: '',
@@ -33,7 +34,7 @@ const AddSalaryForm = () => {
           payDate: '',
         });
       } else {
-        alert('Error adding salary');
+        toast.error('Error adding salary');
       }
     } catch (error) {
       console.error('Error:', error);
