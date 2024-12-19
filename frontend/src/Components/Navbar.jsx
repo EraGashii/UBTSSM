@@ -49,8 +49,12 @@ export default function Navbar() {
                 )}
                 {/* Conditionally render Profile link for 'user' role only */}
                 {user.role === 'user' && (
-                  <li><Link className="dropdown-item" to={`/profile/${user._id}`}>Profile</Link></li>
+                  <li><Link className="dropdown-item" to={`/profile/${user._id}`}> UpdateProfile</Link></li>
                 )}
+                   {user.role === 'user' && (
+                  <li><Link className="dropdown-item" to={`/user-profile/${user._id}`}> Profile</Link></li>
+                )}
+                
                 <li><a className="dropdown-item" style={{ cursor: "pointer" }} onClick={handleLogout}>Sign Out</a></li>
               </ul>
             </div>

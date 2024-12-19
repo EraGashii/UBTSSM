@@ -12,6 +12,7 @@ import Allpost from './pages/Admin/Allpost';
 import ManageDepartments from './pages/Admin/ManageDepartments';
 import ManageEmployees from './pages/Admin/ManageEmployees';
 import AddSalaryForm from './Components/AddSalaryForm'; // Import AddSalaryForm
+import UserProfile from './Components/UserProfile.jsx';
 
 import { Toaster } from 'react-hot-toast';
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="post/:id" element={<Post />} />
           <Route path="profile/:id" element={<Profile />} />
+             <Route path="user-profile/:id" element={<UserProfile />} /> {/* Updated path */}
         </Route>
 
         {/* Admin Routes */}
@@ -35,6 +37,7 @@ export default function App() {
           <Route path="department" element={<ManageDepartments />} />
           <Route path="manage-employees" element={<ManageEmployees />} />
           <Route path="add-salary" element={<AddSalaryForm />} /> {/* New Route */}
+       
         </Route>
 
         {/* Auth Routes */}
