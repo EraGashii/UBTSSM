@@ -3,12 +3,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import LeaveManagement from './LeaveManagement'; // Import LeaveManagement component
 
-
 export default function ManageEmployees() {
   const [employees, setEmployees] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showLeaveManagement, setShowLeaveManagement] = useState(false); // Control leave UI visibility
+  const [showEmployeeDetails, setShowEmployeeDetails] = useState(false); // Control employee details modal visibility
 
   const [formData, setFormData] = useState({
     name: '',
@@ -83,9 +83,12 @@ export default function ManageEmployees() {
   const handleAction = (action, emp) => {
     if (action === 'edit') {
       handleEdit(emp);
-    }else if (action === 'leave') {
+    } else if (action === 'leave') {
       setSelectedEmployee(emp); // Pass employee data
       setShowLeaveManagement(true); // Show leave management for this employee
+    } else if (action === 'view') {
+      setSelectedEmployee(emp); // Show employee details
+      setShowEmployeeDetails(true); // Toggle employee details modal visibility
     }
   };
 
@@ -156,14 +159,13 @@ export default function ManageEmployees() {
             onChange={handleChange}
           />
           <input
-  type="password"
-  placeholder="Password"
-  name="password"
-  value={formData.password}
-  className="form-control mb-2"
-  onChange={handleChange}
-/>
-
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={formData.password}
+            className="form-control mb-2"
+            onChange={handleChange}
+          />
           <input type="file" className="form-control mb-3" onChange={handleFileChange} />
           <button type="submit" className="btn btn-primary">
             {selectedEmployee ? 'Update Employee' : 'Submit'}
@@ -226,16 +228,63 @@ export default function ManageEmployees() {
               </tr>
             ))}
           </tbody>
-          {showLeaveManagement && selectedEmployee && (
-         <LeaveManagement
-          employeeID={selectedEmployee.employeeID} // Pass employeeID to LeaveManagement
-           onBack={() => {
-              setShowLeaveManagement(false); // Hide LeaveManagement
-               setSelectedEmployee(null); // Clear selected employee
-             }}
-           />
-        )}
         </table>
+      )}
+
+      {showLeaveManagement && selectedEmployee && (
+        <LeaveManagement
+          employeeID={selectedEmployee.employeeID} // Pass employeeID to LeaveManagement
+          onBack={() => {
+            setShowLeaveManagement(false); // Hide LeaveManagement
+            setSelectedEmployee(null); // Clear selected employee
+          }}
+        />
+      )}
+
+      {showEmployeeDetails && selectedEmployee && (
+        <div
+          className="modal show"
+          style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Employee Details</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => setShowEmployeeDetails(false)}
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p><strong>Name:</strong> {selectedEmployee.name}</p>
+                <p><strong>Email:</strong> {selectedEmployee.email}</p>
+                <p><strong>Employee ID:</strong> {selectedEmployee.employeeID}</p>
+                <p><strong>Date of Birth:</strong> {selectedEmployee.dateOfBirth}</p>
+                <p><strong>Department:</strong> {selectedEmployee.department}</p>
+                <p><strong>Salary:</strong> {selectedEmployee.salary}</p>
+                <img
+                  src={`http://localhost:8000${selectedEmployee.image}`}
+                  alt={selectedEmployee.name}
+                  width="150"
+                  height="150"
+                  className="rounded-circle"
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowEmployeeDetails(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
