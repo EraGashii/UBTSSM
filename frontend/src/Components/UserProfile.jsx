@@ -3,36 +3,44 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 export default function UserProfile() {
-  const [userDetails, setUserDetails] = useState(null);  // Stores the fetched user details
-  const [loading, setLoading] = useState(true);  // Manages the loading state
+  const [userDetails, setUserDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const token = localStorage.getItem('authToken');  // Retrieve the token
+      const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+
+      if (!token) {
+        toast.error('No token found, please log in.');
+        setLoading(false);
+        return;
+      }
 
       try {
         const response = await axios.get('http://localhost:8000/user/me', {
           headers: {
-            Authorization: `Bearer ${token}`,  // Add token in Authorization header
+            Authorization: `Bearer ${token}`, // Send token in Authorization header
           },
         });
-        setUserDetails(response.data);  // Store fetched user details
+
+        setUserDetails(response.data); // Store fetched user details
       } catch (error) {
-        toast.error('Failed to load user details');  // Error handling
+        console.error('Error fetching user details:', error);
+        toast.error('Failed to load user details');
       } finally {
-        setLoading(false);  // Set loading to false after data is fetched
+        setLoading(false);
       }
     };
 
-    fetchUserDetails();  // Fetch the user details
-  }, []);  // Empty dependency array to run the effect once when the component mounts
+    fetchUserDetails(); // Call the function
+  }, []);
 
   if (loading) {
-    return <div>Loading...</div>;  // Show loading message while fetching data
+    return <div>Loading...</div>;
   }
 
   if (!userDetails) {
-    return <div>Unable to load user details</div>;  // Error message if data is not available
+    return <div>Unable to load user details</div>;
   }
 
   return (
@@ -41,7 +49,7 @@ export default function UserProfile() {
       <div className="card p-4">
         <div>
           <img
-            src={`http://localhost:8000${userDetails.image}`}  // User's profile image
+            src={`http://localhost:8000${userDetails.image}`}
             alt={userDetails.name}
             width="150"
             height="150"
@@ -49,11 +57,11 @@ export default function UserProfile() {
           />
         </div>
         <div className="mt-3">
-          <p><strong>Name:</strong> {userDetails.name}</p>  // User's name
-          <p><strong>Email:</strong> {userDetails.email}</p>  // User's email
-          <p><strong>Employee ID:</strong> {userDetails.employeeID}</p>  // User's employee ID
-          <p><strong>Date of Birth:</strong> {userDetails.dateOfBirth}</p>  // User's date of birth
-          <p><strong>Department:</strong> {userDetails.department}</p>  // User's department
+          <p><strong>Name:</strong> {userDetails.name}</p>
+          <p><strong>Email:</strong> {userDetails.email}</p>
+          <p><strong>Employee ID:</strong> {userDetails.employeeID}</p>
+          <p><strong>Date of Birth:</strong> {userDetails.dateOfBirth}</p>
+          <p><strong>Department:</strong> {userDetails.department}</p>
         </div>
       </div>
     </div>

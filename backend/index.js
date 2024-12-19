@@ -14,6 +14,8 @@ import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
 import LeaveRoutes from './routes/LeaveRoutes.js';
 import SalariesRoutes from './routes/salaries.js';
+import employeeRoutes from './routes/employeeRoutes.js';
+
 
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -56,6 +58,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);
 app.use('/salaries', SalariesRoutes); // <-- Add this line for salary routes
+app.use('/user', employeeRoutes);
 
 // Start server
 app.listen(PORT, () => {
