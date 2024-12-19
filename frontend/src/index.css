@@ -221,6 +221,122 @@ body {
   background-color: #4979c6;
 }
 
+th, td {
+  color: #e0e0e0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
 
+th {
+  font-weight: bold;
+}
 
+.btn {
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #444;
+}
+
+.btn-view { background-color: #1e90ff; }
+.btn-edit { background-color: #ffb703; }
+.btn-salary { background-color: #2a9d8f; }
+.btn-leave { background-color: #e63946; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border-bottom: 1px solid #444;
+  padding: 12px;
+}
+
+tr:nth-child(even) {
+  background-color: #2b2b2b;
+}
+
+tr:hover {
+  background-color: #3d3d3d;
+}
+
+.container {
+  padding: 20px;
+}
+
+/* Container Styling */
+.container {
+  background-color: #ffffff; /* White background */
+  padding: 24px;
+  border-radius: 8px; /* Rounded corners for a softer look */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9; /* Slightly off-white for table background */
+}
+
+th, td {
+  color: #333; /* Dark text for readability */
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd; /* Light gray border between rows */
+}
+
+th {
+  font-weight: bold;
+  background-color: #f1f1f1; /* Light gray background for header */
+}
+
+/* Alternate Row Color */
+tr:nth-child(even) {
+  background-color: #f5f5f5; /* Very light gray for even rows */
+}
+
+/* Hover Effect */
+tr:hover {
+  background-color: #e0e0e0; /* Light gray on hover */
+}
+
+/* Button Styles */
+.btn {
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.2s;
+  border: none;
+}
+
+.btn:hover {
+  background-color: #444;
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Specific Button Colors */
+.btn-view { background-color: #1e90ff; }    /* Blue */
+.btn-edit { background-color: #ffb703; }    /* Yellow */
+.btn-salary { background-color: #2a9d8f; }  /* Green */
+.btn-leave { background-color: #e63946; }    /* Red */
+
+/* Add margin between buttons */
+.btn + .btn {
+  margin-left: 8px;
+}
+
+/* Headings */
+h2 {
+  color: #222;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
 
