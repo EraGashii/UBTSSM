@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'; // Import axios for API requests
+import toast from 'react-hot-toast';
 
 export default function Register() {
   const [value, setValue] = useState({
     email: '',
     password: '',
   });
+
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // To track loading state
 
   const handleChange = (e) => {
     setValue({
@@ -14,10 +19,28 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', value);
-    // Add your form submission logic here
+
+    setLoading(true); // Start loading
+
+    try {
+      const response = await axios.post('http://localhost:8000/auth/register', {
+        email: value.email,
+        password: value.password,
+      });
+
+      if (response.data.message === 'User created successfully') {
+        alert('Registration successful!');
+        // Redirect to login page or home page after successful registration
+      }
+      toast.success('User registered successfully!');
+
+    } catch (error) {
+      setError(error.response?.data?.message || 'Something went wrong');
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
@@ -68,8 +91,9 @@ export default function Register() {
                     value={value.password}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">
-                  Sign up
+                {error && <p className="text-danger">{error}</p>}
+                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                  {loading ? 'Signing up...' : 'Sign up'}
                 </button>
               </form>
               <p className="mt-3 mb-0 text-muted">
