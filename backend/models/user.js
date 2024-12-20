@@ -1,26 +1,34 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
+    FullName: {
+        type: String,
+    },
+    email: {
+        type: String,
+    },
+    profileImage: { // Dëgjoni se ky është emri i fushës që përdorni për imazhin
+        type: String,
+    },
+    password: {
+        type: String,
+    },
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user',
+    },
+    employeeID: { // Sigurohuni që fusha e employeeID është e pranishme
+        type: String,
+    },
+    dateOfBirth: { // Sigurohuni që fusha e dateOfBirth është e pranishme
+        type: String,
+    },
+    department: { // Sigurohuni që fusha e department është e pranishme
+        type: String,
+    }
+}, { timestamps: true });
 
-    FullName:{
-        type:String,
-    },
-    email:{
-        type:String,
-    },
-    profile:{
-        type:String,
-    },
-    password:{
-        type:String,
-    },
-    role:{
-        type:String,
-        enum:['admin','user'],
-        default:'user'
-    },
-},{timestamps:true})
+const UserModel = mongoose.model("Users", UserSchema);
 
-const UserModel=mongoose.model("Users",UserSchema)
-
-export default UserModel
+export default UserModel;

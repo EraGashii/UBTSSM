@@ -1,6 +1,7 @@
 import express from 'express';
 import { isLogin } from '../middleware/isAdmin.js'; // Import login middleware
-import UserModel from '../models/user.js'; // Import user model
+import Employee from '../models/Employee.js'
+
 
 const router = express.Router();
 

@@ -1,31 +1,32 @@
-import express from 'express';
-import { isLogin } from '../middleware/authMiddleware.js'; // Import login middleware
-import UserModel from '../models/user.js'; // Import user model
+    import express from 'express';
+    import { isLogin } from '../middleware/isAdmin.js'; // Import login middleware
+    import UserModel from '../models/user.js'; // Import user model
 
-const router = express.Router();
+    const router = express.Router();
 
-// Route to get the logged-in user's profile
-router.get('/me', isLogin, async (req, res) => {
-  try {
-    const user = req.user; // `req.user` is attached by the isLogin middleware
+    // Route to get the logged-in user's profile
+    router.get('/me', isLogin, async (req, res) => {
+        try {
+          const user = req.user; // This should be the user fetched by isLogin middleware
+          console.log('User object in /me route:', user); // Log to check the user object
+      
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+      
+          res.json({
+            name: user.FullName || 'N/A',
+            email: user.email || 'N/A',
+            employeeID: user.employeeID || 'N/A',
+            dateOfBirth: user.dateOfBirth || 'N/A',
+            department: user.department || 'N/A',
+            image: user.profileImage || '/default-avatar.png',
+          });
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          res.status(500).json({ message: 'Server error' });
+        }
+      });
+      
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Return user details
-    res.json({
-      name: user.name,
-      email: user.email,
-      employeeID: user.employeeID,
-      dateOfBirth: user.dateOfBirth,
-      department: user.department,
-      image: user.profileImage, // Assuming the user schema includes this field
-    });
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-export default router;
+    export default router;

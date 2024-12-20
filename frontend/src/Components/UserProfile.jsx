@@ -6,35 +6,44 @@ export default function UserProfile() {
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+  // Function to fetch user details
+  const fetchUserDetails = async () => {
+    const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
 
-      if (!token) {
-        toast.error('No token found, please log in.');
-        setLoading(false);
-        return;
-      }
+    if (!token) {
+      toast.error('No token found, please log in.');
+      setLoading(false);
+      return;
+    }
 
-      try {
-        const response = await axios.get('http://localhost:8000/user/me', {
-          headers: {
-            Authorization: `Bearer ${token}`, // Send token in Authorization header
-          },
-        });
+    try {
+      const response = await axios.get('http://localhost:8000/user/me', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token in Authorization header
+        },
+      });
 
-        setUserDetails(response.data); // Store fetched user details
-      } catch (error) {
-        console.error('Error fetching user details:', error);
+      // Check if response is successful and contains the required data
+      if (response.status === 200 && response.data) {
+        setUserDetails(response.data);
+      } else {
         toast.error('Failed to load user details');
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      // Log more detailed error information
+      console.error('Error fetching user details:', error.response?.data || error.message);
+      toast.error(error.response?.data?.message || 'Failed to load user details');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUserDetails(); // Call the function
+  // UseEffect to call fetchUserDetails when component mounts
+  useEffect(() => {
+    fetchUserDetails();
   }, []);
 
+  // Conditional rendering based on loading and userDetails state
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -47,21 +56,21 @@ export default function UserProfile() {
     <div className="container mt-4">
       <h2>Your Profile</h2>
       <div className="card p-4">
-        <div>
+        <div className="text-center">
           <img
-            src={`http://localhost:8000${userDetails.image}`}
-            alt={userDetails.name}
+            src={`http://localhost:8000${userDetails.image || '/default-avatar.png'}`} // Use default image if image is undefined
+            alt={userDetails.name || 'User Avatar'} // Use fallback text if name is undefined
             width="150"
             height="150"
             className="rounded-circle"
           />
         </div>
         <div className="mt-3">
-          <p><strong>Name:</strong> {userDetails.name}</p>
-          <p><strong>Email:</strong> {userDetails.email}</p>
-          <p><strong>Employee ID:</strong> {userDetails.employeeID}</p>
-          <p><strong>Date of Birth:</strong> {userDetails.dateOfBirth}</p>
-          <p><strong>Department:</strong> {userDetails.department}</p>
+          <p><strong>Name:</strong> {userDetails.name || 'N/A'}</p>
+          <p><strong>Email:</strong> {userDetails.email || 'N/A'}</p>
+          <p><strong>Employee ID:</strong> {userDetails.employeeID || 'N/A'}</p>
+          <p><strong>Date of Birth:</strong> {userDetails.dateOfBirth || 'N/A'}</p>
+          <p><strong>Department:</strong> {userDetails.department || 'N/A'}</p>
         </div>
       </div>
     </div>
