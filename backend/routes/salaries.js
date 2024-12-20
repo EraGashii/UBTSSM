@@ -33,4 +33,49 @@ SalariesRoutes.post('/', async (req, res) => {
   }
 });
 
+  // GET route to fetch salary by employee ID
+SalariesRoutes.get('/:employeeId', async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+    const salary = await Salary.findOne({ employee: employeeId });
+
+    if (!salary) {
+      return res.status(404).json({ message: 'Salary not found' });
+    }
+
+    res.status(200).json(salary);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching salary', error });
+  }
+});
+
+// PUT route to update salary
+SalariesRoutes.put('/:employeeId', async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+    const updates = req.body;
+
+    // Find and update the salary
+    const salary = await Salary.findOneAndUpdate(
+      { employee: employeeId },
+      { $set: updates },
+      { new: true }
+    );
+
+    if (!salary) {
+      return res.status(404).json({ message: 'Salary not found' });
+    }
+
+    res.status(200).json({
+      message: 'Salary updated successfully!',
+      salaryData: salary,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error updating salary', error });
+  }
+});
+
+
 export default SalariesRoutes;

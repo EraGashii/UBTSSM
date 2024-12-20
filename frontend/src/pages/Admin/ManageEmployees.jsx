@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import LeaveManagement from './LeaveManagement'; // Import LeaveManagement component
+import SalaryManager from './SalaryManager';
 
 export default function ManageEmployees() {
   const [employees, setEmployees] = useState([]);
@@ -9,6 +10,8 @@ export default function ManageEmployees() {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showLeaveManagement, setShowLeaveManagement] = useState(false); // Control leave UI visibility
   const [showEmployeeDetails, setShowEmployeeDetails] = useState(false); // Control employee details modal visibility
+  const [showSalaryManager, setShowSalaryManager] = useState(false); // Control SalaryManager visibility
+
 
   const [formData, setFormData] = useState({
     name: '',
@@ -89,7 +92,10 @@ export default function ManageEmployees() {
     } else if (action === 'view') {
       setSelectedEmployee(emp); // Show employee details
       setShowEmployeeDetails(true); // Toggle employee details modal visibility
-    }
+    } else if (action === 'salary') {
+      setSelectedEmployee(emp);
+      setShowSalaryManager(true);
+    }    
   };
 
 
@@ -239,6 +245,12 @@ export default function ManageEmployees() {
             setShowLeaveManagement(false); // Hide LeaveManagement
             setSelectedEmployee(null); // Clear selected employee
           }}
+        />
+      )}
+      {showSalaryManager && selectedEmployee && (
+        <SalaryManager
+          employee={selectedEmployee} // Pass the selected employee to SalaryManager
+          onClose={() => setShowSalaryManager(false)} // Close SalaryManager
         />
       )}
 
