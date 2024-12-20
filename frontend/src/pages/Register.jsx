@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import axios for API requests
-import toast from 'react-hot-toast';
+import logo from '../assets/ubt.png'; // Import the logo image
 
 export default function Register() {
   const [value, setValue] = useState({
@@ -34,8 +34,6 @@ export default function Register() {
         alert('Registration successful!');
         // Redirect to login page or home page after successful registration
       }
-      toast.success('User registered successfully!');
-
     } catch (error) {
       setError(error.response?.data?.message || 'Something went wrong');
     } finally {
@@ -50,10 +48,10 @@ export default function Register() {
           <Link to="/" className="mb-4 text-dark text-decoration-none d-flex align-items-center">
             <img
               className="me-2"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+              src={"src/assets/ubt.png"} // Use the imported logo image here
               alt="logo"
-              width="32"
-              height="32"
+              width="82"
+              height="62"
             />
             <span className="h4 mb-0 fw-bold">UBTSSM</span>
           </Link>
