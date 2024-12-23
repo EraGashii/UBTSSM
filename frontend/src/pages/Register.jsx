@@ -42,7 +42,7 @@ export default function Register() {
       setLoading(false); // End loading
     }
   };
-
+///testt
   return (
     <>
       <section className="bg-light">
