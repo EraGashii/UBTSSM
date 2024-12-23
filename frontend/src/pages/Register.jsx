@@ -40,7 +40,7 @@ export default function Register() {
       setLoading(false); // End loading
     }
   };
-
+///testt
   return (
     <>
       <section className="bg-light">
@@ -52,6 +52,7 @@ export default function Register() {
               alt="logo"
               width="82"
               height="62"
+
             />
             <span className="h4 mb-0 fw-bold">UBTSSM</span>
           </Link>

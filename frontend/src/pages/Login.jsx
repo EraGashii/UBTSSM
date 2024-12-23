@@ -50,11 +50,13 @@ export default function Login() {
                 <div className="container d-flex flex-column align-items-center justify-content-center min-vh-100 py-4">
                     <Link to="/" className="mb-4 text-dark text-decoration-none d-flex align-items-center">
                         <img
+
                            className="me-2"
                            src={"src/assets/ubt.png"} // Use the imported logo image here
                            alt="logo"
                            width="82"
                            height="62"
+
                         />
                         <span className="h4 mb-0 fw-bold">UBTSSM</span>
                     </Link>
