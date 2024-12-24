@@ -8,13 +8,13 @@ import path from 'path';
 import DBCon from './utils/db.js';
 import AuthRouters from './routes/Auth.js';
 import BlogsRouters from './routes/Blog.js';
-import UsersRouters from './routes/Users.js';
+import UsersRoutes from './routes/Users.js';
 import profileRoutes from './routes/profileRoutes.js';
-import EmployeeRouters from './routes/Employee.js';
+// import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
 import LeaveRoutes from './routes/LeaveRoutes.js';
 import SalariesRoutes from './routes/salaries.js';
-import employeeRoutes from './routes/employeeRoutes.js';
+// import employeeRoutes from './routes/employeeRoutes.js';
 
 
 dotenv.config();
@@ -51,14 +51,14 @@ DBCon();
 // Routes
 app.use('/auth', AuthRouters);
 app.use('/blog', BlogsRouters);
-app.use('/users', UsersRouters);
+app.use('/users', UsersRoutes);
 app.use('/profile', profileRoutes);
-app.use('/employee', EmployeeRouters);
+// app.use('/employee', EmployeeRouters);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);
 app.use('/salaries', SalariesRoutes); // <-- Add this line for salary routes
-app.use('/user', employeeRoutes);
+// app.use('/user', employeeRoutes);
 
 // Start server
 app.listen(PORT, () => {

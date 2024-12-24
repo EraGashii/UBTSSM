@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
         enum: ['admin', 'user'],
         default: 'user',
     },
-    employeeID: { // Sigurohuni që fusha e employeeID është e pranishme
+    userID: { // Sigurohuni që fusha e employeeID është e pranishme
         type: String,
     },
     dateOfBirth: { // Sigurohuni që fusha e dateOfBirth është e pranishme
