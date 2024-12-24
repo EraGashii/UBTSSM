@@ -17,9 +17,9 @@ export default function ManageUsers() {
     email: '',
     userID: '',
     dateOfBirth: '',
-    department: '', // Changed from role to department
+    department: '',
     image: null,
-    password: '', // Password field for user creation
+    password: '',
   });
 
   useEffect(() => {
@@ -53,11 +53,9 @@ export default function ManageUsers() {
       }
 
       if (selectedUser) {
-        // Edit user
         await axios.put(`http://localhost:8000/user/update/${selectedUser._id}`, data);
         toast.success('User updated successfully');
       } else {
-        // Add new user
         await axios.post('http://localhost:8000/user/add', data);
         toast.success('User added successfully');
       }
@@ -78,9 +76,9 @@ export default function ManageUsers() {
       email: user.email,
       userID: user.userID,
       dateOfBirth: user.dateOfBirth,
-      department: user.department, // Changed from role to department
+      department: user.department,
       image: null,
-      password: '', // Set to empty for edit (password change not required)
+      password: '',
     });
   };
 
@@ -88,15 +86,15 @@ export default function ManageUsers() {
     if (action === 'edit') {
       handleEdit(user);
     } else if (action === 'leave') {
-      setSelectedUser(user); // Pass user data
-      setShowLeaveManagement(true); // Show leave management for this user
+      setSelectedUser(user);
+      setShowLeaveManagement(true);
     } else if (action === 'view') {
-      setSelectedUser(user); // Show user details
-      setShowUserDetails(true); // Toggle user details modal visibility
+      setSelectedUser(user);
+      setShowUserDetails(true);
     } else if (action === 'salary') {
       setSelectedUser(user);
       setShowSalaryManager(true);
-    }    
+    }
   };
 
   return (
@@ -113,7 +111,7 @@ export default function ManageUsers() {
               email: '',
               userID: '',
               dateOfBirth: '',
-              department: '', // Changed from role to department
+              department: '',
               password: '',
               image: null,
             });
@@ -159,9 +157,9 @@ export default function ManageUsers() {
           />
           <input
             type="text"
-            placeholder="Department" // Changed label from Role to Department
-            name="department" // Changed from role to department
-            value={formData.department} // Updated field from role to department
+            placeholder="Department"
+            name="department"
+            value={formData.department}
             className="form-control mb-2"
             onChange={handleChange}
           />
@@ -186,7 +184,7 @@ export default function ManageUsers() {
               <th>Image</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Department</th> {/* Changed column from Role to Department */}
+              <th>Department</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -205,7 +203,7 @@ export default function ManageUsers() {
                 </td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.department}</td> {/* Changed from role to department */}
+                <td>{user.department}</td>
                 <td>
                   <button
                     className="btn btn-info btn-sm me-2"
@@ -240,18 +238,18 @@ export default function ManageUsers() {
 
       {showLeaveManagement && selectedUser && (
         <LeaveManagement
-          userID={selectedUser.userID} // Pass userID to LeaveManagement
+          userID={selectedUser.userID}
           onBack={() => {
-            setShowLeaveManagement(false); // Hide LeaveManagement
-            setSelectedUser(null); // Clear selected user
+            setShowLeaveManagement(false);
+            setSelectedUser(null);
           }}
         />
       )}
 
       {showSalaryManager && selectedUser && (
         <SalaryManager
-          user={selectedUser} // Pass the selected user to SalaryManager
-          onClose={() => setShowSalaryManager(false)} // Close SalaryManager
+          user={selectedUser}
+          onClose={() => setShowSalaryManager(false)}
         />
       )}
 
@@ -275,9 +273,9 @@ export default function ManageUsers() {
               <div className="modal-body">
                 <p><strong>Name:</strong> {selectedUser.name}</p>
                 <p><strong>Email:</strong> {selectedUser.email}</p>
-                <p><strong>User ID:</strong> {selectedUser.userID}</p>            
+                <p><strong>User ID:</strong> {selectedUser.userID}</p>
                 <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
-                <p><strong>Department:</strong> {selectedUser.department}</p> {/* Changed to department */}
+                <p><strong>Department:</strong> {selectedUser.department}</p>
                 <p><strong>Salary:</strong> {selectedUser.salary}</p>
                 {selectedUser.image && (
                   <img
