@@ -1,10 +1,10 @@
-import UserModel from "../models/user.js";
+import User from "../models/user.js";
 import PostModel from "../models/blog.js";
 import CommentModel from "../models/comment.js"; // Import Comment model
 
 const Getalldate = async (req, res) => {
     try {
-        const Users = await UserModel.find();
+        const Users = await User.find();
         const Posts = await PostModel.find();
         const Comments = await CommentModel.find(); 
 
@@ -24,7 +24,7 @@ export { Getalldate };
 
 const GetUser=async(req,res)=>{
     try {
-        const Users=await UserModel.find()
+        const Users=await User.find()
 
         //coments here
         
@@ -41,7 +41,7 @@ const Userdelete=async(req,res)=>{
     try {
         const userId=req.params.id
 
-        const ExistUser=await UserModel.findById(userId)
+        const ExistUser=await User.findById(userId)
         if(!ExistUser){
             return res.status(404).json({success:false,message:"Not User Found"})
         }
@@ -55,7 +55,7 @@ const Userdelete=async(req,res)=>{
             .catch(error =>console.log('Error deleting post image',error))
         }
 
-        const DeleteUser=await UserModel.findByIdAndDelete(userId)
+        const DeleteUser=await User.findByIdAndDelete(userId)
         res.status(200).json({success:true,message:"User Deleted Successfully",user:DeleteUser})
     } catch (error) {
         console.log(error)

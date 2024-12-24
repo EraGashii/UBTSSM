@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import LeaveManagement from './LeaveManagement'; // Import LeaveManagement component (unchanged)
-import SalaryManager from './SalaryManager'; // Import SalaryManager component (unchanged)
+import LeaveManagement from './LeaveManagement';
+import SalaryManager from './SalaryManager';
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [showLeaveManagement, setShowLeaveManagement] = useState(false); // Control leave UI visibility
-  const [showUserDetails, setShowUserDetails] = useState(false); // Control user details modal visibility
-  const [showSalaryManager, setShowSalaryManager] = useState(false); // Control SalaryManager visibility
+  const [showLeaveManagement, setShowLeaveManagement] = useState(false);
+  const [showUserDetails, setShowUserDetails] = useState(false);
+  const [showSalaryManager, setShowSalaryManager] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -18,6 +18,7 @@ export default function ManageUsers() {
     userID: '',
     dateOfBirth: '',
     department: '',
+    salary: '', // Added salary field
     image: null,
     password: '',
   });
@@ -53,10 +54,10 @@ export default function ManageUsers() {
       }
 
       if (selectedUser) {
-        await axios.put(`http://localhost:8000/user/update/${selectedUser._id}`, data);
+        await axios.put(`http://localhost:8000/users/update/${selectedUser._id}`, data);
         toast.success('User updated successfully');
       } else {
-        await axios.post('http://localhost:8000/user/add', data);
+        await axios.post('http://localhost:8000/users/add', data);
         toast.success('User added successfully');
       }
 
@@ -77,6 +78,7 @@ export default function ManageUsers() {
       userID: user.userID,
       dateOfBirth: user.dateOfBirth,
       department: user.department,
+      salary: user.salary, // Include salary in edit form
       image: null,
       password: '',
     });
@@ -112,6 +114,7 @@ export default function ManageUsers() {
               userID: '',
               dateOfBirth: '',
               department: '',
+              salary: '', // Reset salary field
               password: '',
               image: null,
             });
@@ -164,13 +167,14 @@ export default function ManageUsers() {
             onChange={handleChange}
           />
           <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
+            type="text"
+            placeholder="Salary"
+            name="salary"
+            value={formData.salary}
             className="form-control mb-2"
             onChange={handleChange}
           />
+          <input type="password" placeholder="Password" name="password" className="form-control mb-2" onChange={handleChange} />
           <input type="file" className="form-control mb-3" onChange={handleFileChange} />
           <button type="submit" className="btn btn-primary">
             {selectedUser ? 'Update User' : 'Submit'}
@@ -185,6 +189,7 @@ export default function ManageUsers() {
               <th>Name</th>
               <th>Email</th>
               <th>Department</th>
+              <th>Salary</th> {/* Added salary column */}
               <th>Action</th>
             </tr>
           </thead>
@@ -204,29 +209,18 @@ export default function ManageUsers() {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.department}</td>
+                <td>{user.salary}</td> {/* Display salary */}
                 <td>
-                  <button
-                    className="btn btn-info btn-sm me-2"
-                    onClick={() => handleAction('view', user)}
-                  >
+                  <button className="btn btn-info btn-sm me-2" onClick={() => handleAction('view', user)}>
                     View
                   </button>
-                  <button
-                    className="btn btn-warning btn-sm me-2"
-                    onClick={() => handleAction('edit', user)}
-                  >
+                  <button className="btn btn-warning btn-sm me-2" onClick={() => handleAction('edit', user)}>
                     Edit
                   </button>
-                  <button
-                    className="btn btn-success btn-sm me-2"
-                    onClick={() => handleAction('salary', user)}
-                  >
+                  <button className="btn btn-success btn-sm me-2" onClick={() => handleAction('salary', user)}>
                     Salary
                   </button>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleAction('leave', user)}
-                  >
+                  <button className="btn btn-danger btn-sm" onClick={() => handleAction('leave', user)}>
                     Leave
                   </button>
                 </td>
@@ -276,7 +270,7 @@ export default function ManageUsers() {
                 <p><strong>User ID:</strong> {selectedUser.userID}</p>
                 <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
                 <p><strong>Department:</strong> {selectedUser.department}</p>
-                <p><strong>Salary:</strong> {selectedUser.salary}</p>
+                <p><strong>Salary:</strong> {selectedUser.salary}</p> {/* Show salary in modal */}
                 {selectedUser.image && (
                   <img
                     src={`http://localhost:8000${selectedUser.image}`}

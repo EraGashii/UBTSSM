@@ -1,4 +1,4 @@
-import UserModel from '../models/user.js';
+import User from '../models/user.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import upload from '../middleware/multer.js';
@@ -7,7 +7,7 @@ const Register = async (req, res) => {
   try {
     const { FullName, email, password } = req.body;
 
-    const existUser = await UserModel.findOne({ email });
+    const existUser = await User.findOne({ email });
     if (existUser) {
       return res.status(303).json({ success: false, message: 'User already exists, please login' });
     }
@@ -15,7 +15,7 @@ const Register = async (req, res) => {
     const imagePath = req.file ? req.file.filename : null;
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const NewUser = new UserModel({
+    const NewUser = new User({
       FullName,
       email,
       password: hashedPassword,
@@ -36,7 +36,7 @@ const Login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'All fields are required' });
     }
-    const FindUser = await UserModel.findOne({ email });
+    const FindUser = await User.findOne({ email });
 
     if (!FindUser) {
       return res.status(400).json({ success: false, message: 'No User Found. Please Register' });

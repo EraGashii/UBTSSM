@@ -1,6 +1,6 @@
 import express from 'express';
 import { isLogin } from '../middleware/isAdmin.js'; // Import login middleware
-import UserModel from '../models/user.js'; // Import user model
+import User from '../models/user.js'; // Import user model
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.get('/me', isLogin, async (req, res) => {
     // Assuming req.user contains the user ID from authentication
     const userId = req.user._id; // Typically set by the isLogin middleware after authentication
 
-    const user = await UserModel.findById(userId); // Fetch user data from the database by ID
+    const user = await User.findById(userId); // Fetch user data from the database by ID
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });

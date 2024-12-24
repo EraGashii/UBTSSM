@@ -1,4 +1,4 @@
-import UserModel from '../models/user.js'; // Assuming you have a User model
+import User from '../models/user.js'; // Assuming you have a User model
 // import bcrypt from 'bcrypt';
 import bcrypt from 'bcryptjs';
 //const path = require('path');
@@ -10,7 +10,7 @@ export const updateProfile = async (req, res) => {
 
   try {
     // Get the current user from the request (assuming authentication middleware)
-    const user = await UserModel.findById(req.user._id);
+    const user = await User.findById(req.user._id);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -40,7 +40,7 @@ export const updateProfile = async (req, res) => {
     }
 
     // Update the user in the database
-    const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, updateData, {
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, updateData, {
       new: true, // Return the updated user object
     });
 

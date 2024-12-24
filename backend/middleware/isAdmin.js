@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import UserModel from '../models/user.js';
+import User from '../models/user.js';
 
 const isAdmin = async (req, res, next) => {
    try {
@@ -9,7 +9,7 @@ const isAdmin = async (req, res, next) => {
      }
  
      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-     const user = await UserModel.findById(decoded.userId);
+     const user = await User.findById(decoded.userId);
  
      if (!user) {
        return res.status(403).json({ message: 'Unauthorized: User does not exist' });
@@ -34,7 +34,7 @@ const isAdmin = async (req, res, next) => {
      }
  
      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-     const user = await UserModel.findById(decoded.userId);
+     const user = await User.findById(decoded.userId);
  
      if (!user) {
        return res.status(403).json({ message: 'Unauthorized: User does not exist' });
