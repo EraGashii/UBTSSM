@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import LeaveManagement from './LeaveManagement'; // Import LeaveManagement component
-import SalaryManager from './SalaryManager';
+import LeaveManagement from './LeaveManagement'; // Import LeaveManagement component (unchanged)
+import SalaryManager from './SalaryManager'; // Import SalaryManager component (unchanged)
 
-export default function ManageEmployees() {
-  const [employees, setEmployees] = useState([]);
+export default function ManageUsers() {
+  const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [showLeaveManagement, setShowLeaveManagement] = useState(false); // Control leave UI visibility
-  const [showEmployeeDetails, setShowEmployeeDetails] = useState(false); // Control employee details modal visibility
+  const [showUserDetails, setShowUserDetails] = useState(false); // Control user details modal visibility
   const [showSalaryManager, setShowSalaryManager] = useState(false); // Control SalaryManager visibility
-
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    employeeID: '',
+    userID: '',
     dateOfBirth: '',
     department: '',
     image: null,
+    password: '',
   });
 
   useEffect(() => {
-    fetchEmployees();
+    fetchUsers();
   }, []);
 
-  const fetchEmployees = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/employee');
-      setEmployees(response.data.data);
+      const response = await axios.get('http://localhost:8000/users');
+      setUsers(response.data.data);
     } catch (error) {
-      toast.error('Failed to load employees');
+      toast.error('Failed to load users');
     }
   };
 
@@ -52,66 +52,64 @@ export default function ManageEmployees() {
         data.append(key, formData[key]);
       }
 
-      if (selectedEmployee) {
-        // Edit employee
-        await axios.put(`http://localhost:8000/employee/update/${selectedEmployee._id}`, data);
-        toast.success('Employee updated successfully');
+      if (selectedUser) {
+        await axios.put(`http://localhost:8000/user/update/${selectedUser._id}`, data);
+        toast.success('User updated successfully');
       } else {
-        // Add new employee
-        await axios.post('http://localhost:8000/employee/add', data);
-        toast.success('Employee added successfully');
+        await axios.post('http://localhost:8000/user/add', data);
+        toast.success('User added successfully');
       }
 
-      fetchEmployees();
+      fetchUsers();
       setShowForm(false);
-      setSelectedEmployee(null);
+      setSelectedUser(null);
     } catch (error) {
-      toast.error('Failed to submit employee');
+      toast.error('Failed to submit user');
     }
   };
 
-  const handleEdit = (emp) => {
-    setSelectedEmployee(emp);
+  const handleEdit = (user) => {
+    setSelectedUser(user);
     setShowForm(true);
     setFormData({
-      name: emp.name,
-      email: emp.email,
-      employeeID: emp.employeeID,
-      dateOfBirth: emp.dateOfBirth,
-      department: emp.department,
+      name: user.name,
+      email: user.email,
+      userID: user.userID,
+      dateOfBirth: user.dateOfBirth,
+      department: user.department,
       image: null,
+      password: '',
     });
   };
 
-  const handleAction = (action, emp) => {
+  const handleAction = (action, user) => {
     if (action === 'edit') {
-      handleEdit(emp);
+      handleEdit(user);
     } else if (action === 'leave') {
-      setSelectedEmployee(emp); // Pass employee data
-      setShowLeaveManagement(true); // Show leave management for this employee
+      setSelectedUser(user);
+      setShowLeaveManagement(true);
     } else if (action === 'view') {
-      setSelectedEmployee(emp); // Show employee details
-      setShowEmployeeDetails(true); // Toggle employee details modal visibility
+      setSelectedUser(user);
+      setShowUserDetails(true);
     } else if (action === 'salary') {
-      setSelectedEmployee(emp);
+      setSelectedUser(user);
       setShowSalaryManager(true);
-    }    
+    }
   };
-
 
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between mb-4">
-        <h2>Manage Employees</h2>
+        <h2>Manage Users</h2>
         <button
           className="btn btn-success"
           onClick={() => {
             setShowForm(!showForm);
-            setSelectedEmployee(null);
+            setSelectedUser(null);
             setFormData({
               name: '',
               email: '',
-              employeeID: '',
+              userID: '',
               dateOfBirth: '',
               department: '',
               password: '',
@@ -119,13 +117,13 @@ export default function ManageEmployees() {
             });
           }}
         >
-          {showForm ? 'Show Employees' : 'Add New Employee'}
+          {showForm ? 'Show Users' : 'Add New User'}
         </button>
       </div>
 
       {showForm ? (
         <form onSubmit={handleSubmit} encType="multipart/form-data" className="card p-4">
-          <h4>{selectedEmployee ? 'Edit Employee' : 'Add New Employee'}</h4>
+          <h4>{selectedUser ? 'Edit User' : 'Add New User'}</h4>
           <input
             type="text"
             placeholder="Name"
@@ -144,9 +142,9 @@ export default function ManageEmployees() {
           />
           <input
             type="text"
-            placeholder="Employee ID"
-            name="employeeID"
-            value={formData.employeeID}
+            placeholder="User ID"
+            name="userID"
+            value={formData.userID}
             className="form-control mb-2"
             onChange={handleChange}
           />
@@ -175,7 +173,7 @@ export default function ManageEmployees() {
           />
           <input type="file" className="form-control mb-3" onChange={handleFileChange} />
           <button type="submit" className="btn btn-primary">
-            {selectedEmployee ? 'Update Employee' : 'Submit'}
+            {selectedUser ? 'Update User' : 'Submit'}
           </button>
         </form>
       ) : (
@@ -191,43 +189,43 @@ export default function ManageEmployees() {
             </tr>
           </thead>
           <tbody>
-            {employees.map((emp, index) => (
-              <tr key={emp._id}>
+            {users.map((user, index) => (
+              <tr key={user._id}>
                 <td>{index + 1}</td>
                 <td>
                   <img
-                    src={`http://localhost:8000${emp.image}`}
-                    alt={emp.name}
+                    src={`http://localhost:8000${user.image}`}
+                    alt={user.name}
                     width="50"
                     height="50"
                     className="rounded-circle"
                   />
                 </td>
-                <td>{emp.name}</td>
-                <td>{emp.email}</td>
-                <td>{emp.department}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.department}</td>
                 <td>
                   <button
                     className="btn btn-info btn-sm me-2"
-                    onClick={() => handleAction('view', emp)}
+                    onClick={() => handleAction('view', user)}
                   >
                     View
                   </button>
                   <button
                     className="btn btn-warning btn-sm me-2"
-                    onClick={() => handleAction('edit', emp)}
+                    onClick={() => handleAction('edit', user)}
                   >
                     Edit
                   </button>
                   <button
                     className="btn btn-success btn-sm me-2"
-                    onClick={() => handleAction('salary', emp)}
+                    onClick={() => handleAction('salary', user)}
                   >
                     Salary
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleAction('leave', emp)}
+                    onClick={() => handleAction('leave', user)}
                   >
                     Leave
                   </button>
@@ -238,23 +236,24 @@ export default function ManageEmployees() {
         </table>
       )}
 
-      {showLeaveManagement && selectedEmployee && (
+      {showLeaveManagement && selectedUser && (
         <LeaveManagement
-          employeeID={selectedEmployee.employeeID} // Pass employeeID to LeaveManagement
+          userID={selectedUser.userID}
           onBack={() => {
-            setShowLeaveManagement(false); // Hide LeaveManagement
-            setSelectedEmployee(null); // Clear selected employee
+            setShowLeaveManagement(false);
+            setSelectedUser(null);
           }}
         />
       )}
-      {showSalaryManager && selectedEmployee && (
+
+      {showSalaryManager && selectedUser && (
         <SalaryManager
-          employee={selectedEmployee} // Pass the selected employee to SalaryManager
-          onClose={() => setShowSalaryManager(false)} // Close SalaryManager
+          user={selectedUser}
+          onClose={() => setShowSalaryManager(false)}
         />
       )}
 
-      {showEmployeeDetails && selectedEmployee && (
+      {showUserDetails && selectedUser && (
         <div
           className="modal show"
           style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
@@ -262,35 +261,37 @@ export default function ManageEmployees() {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Employee Details</h5>
+                <h5 className="modal-title">User Details</h5>
                 <button
                   type="button"
                   className="close"
-                  onClick={() => setShowEmployeeDetails(false)}
+                  onClick={() => setShowUserDetails(false)}
                 >
                   <span>&times;</span>
                 </button>
               </div>
               <div className="modal-body">
-                <p><strong>Name:</strong> {selectedEmployee.name}</p>
-                <p><strong>Email:</strong> {selectedEmployee.email}</p>
-                <p><strong>Employee ID:</strong> {selectedEmployee.employeeID}</p>
-                <p><strong>Date of Birth:</strong> {selectedEmployee.dateOfBirth}</p>
-                <p><strong>Department:</strong> {selectedEmployee.department}</p>
-                <p><strong>Salary:</strong> {selectedEmployee.salary}</p>
-                <img
-                  src={`http://localhost:8000${selectedEmployee.image}`}
-                  alt={selectedEmployee.name}
-                  width="150"
-                  height="150"
-                  className="rounded-circle"
-                />
+                <p><strong>Name:</strong> {selectedUser.name}</p>
+                <p><strong>Email:</strong> {selectedUser.email}</p>
+                <p><strong>User ID:</strong> {selectedUser.userID}</p>
+                <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
+                <p><strong>Department:</strong> {selectedUser.department}</p>
+                <p><strong>Salary:</strong> {selectedUser.salary}</p>
+                {selectedUser.image && (
+                  <img
+                    src={`http://localhost:8000${selectedUser.image}`}
+                    alt={selectedUser.name}
+                    width="150"
+                    height="150"
+                    className="rounded-circle"
+                  />
+                )}
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={() => setShowEmployeeDetails(false)}
+                  onClick={() => setShowUserDetails(false)}
                 >
                   Close
                 </button>
