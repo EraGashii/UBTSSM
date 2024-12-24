@@ -4,11 +4,11 @@ import axios from 'axios';
 const SalaryManager = () => {
   const [salaryData, setSalaryData] = useState(null);
   const [newSalary, setNewSalary] = useState(null); // For modifications
-  const [employeeId, setEmployeeId] = useState('');
+  const [userID, setuserID] = useState('');
 
   const fetchSalary = async () => {
     try {
-      const response = await axios.get(`/salaries/${employeeId}`); // Adjust route if necessary
+      const response = await axios.get(`/salaries/${userID}`); // Adjust route if necessary
       setSalaryData(response.data);
     } catch (error) {
       console.error('Error fetching salary:', error);
@@ -17,7 +17,7 @@ const SalaryManager = () => {
 
   const updateSalary = async (updatedData) => {
     try {
-      const response = await axios.put(`/salaries/${employeeId}`, updatedData);
+      const response = await axios.put(`/salaries/${userID}`, updatedData);
       setSalaryData(response.data);
       alert('Salary updated successfully!');
     } catch (error) {
@@ -31,8 +31,8 @@ const SalaryManager = () => {
       <input 
         type="text" 
         placeholder="Enter Employee ID" 
-        value={employeeId} 
-        onChange={(e) => setEmployeeId(e.target.value)} 
+        value={userID} 
+        onChange={(e) => setuserID(e.target.value)} 
       />
       <button onClick={fetchSalary}>Get Salary</button>
 

@@ -34,10 +34,10 @@ SalariesRoutes.post('/', async (req, res) => {
 });
 
   // GET route to fetch salary by employee ID
-SalariesRoutes.get('/:employeeId', async (req, res) => {
+SalariesRoutes.get('/:userID', async (req, res) => {
   try {
-    const { employeeId } = req.params;
-    const salary = await Salary.findOne({ employee: employeeId });
+    const { userID } = req.params;
+    const salary = await Salary.findOne({ employee: userID });
 
     if (!salary) {
       return res.status(404).json({ message: 'Salary not found' });
@@ -51,14 +51,14 @@ SalariesRoutes.get('/:employeeId', async (req, res) => {
 });
 
 // PUT route to update salary
-SalariesRoutes.put('/:employeeId', async (req, res) => {
+SalariesRoutes.put('/:userID', async (req, res) => {
   try {
-    const { employeeId } = req.params;
+    const { userID } = req.params;
     const updates = req.body;
 
     // Find and update the salary
     const salary = await Salary.findOneAndUpdate(
-      { employee: employeeId },
+      { employee: userID },
       { $set: updates },
       { new: true }
     );

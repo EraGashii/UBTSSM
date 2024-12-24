@@ -10,11 +10,10 @@ import AuthRouters from './routes/Auth.js';
 import BlogsRouters from './routes/Blog.js';
 import UsersRoutes from './routes/Users.js';
 import profileRoutes from './routes/profileRoutes.js';
-// import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
 import LeaveRoutes from './routes/LeaveRoutes.js';
 import SalariesRoutes from './routes/salaries.js';
-// import employeeRoutes from './routes/employeeRoutes.js';
+
 
 
 dotenv.config();
@@ -52,8 +51,7 @@ DBCon();
 app.use('/auth', AuthRouters);
 app.use('/blog', BlogsRouters);
 app.use('/users', UsersRoutes);
-app.use('/profile', profileRoutes);
-// app.use('/employee', EmployeeRouters);
+app.use('/users/profile', profileRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);

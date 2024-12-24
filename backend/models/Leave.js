@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const LeaveSchema = new mongoose.Schema({
-  employeeID: { type: String, required: true },
+  userID: { type: String, required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
   reason: { type: String, required: true },

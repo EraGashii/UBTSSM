@@ -13,16 +13,6 @@ export default function RecentPost(){
       navigate(`/post/${id}`);
     };
     
-    // const getpost=async()=>{
-    //   try {
-    //     const response = await get('/blog/getposts');
-    //     const data = response.data;
-    //     setPost(data.posts)
-    //     console.log(data)
-    //   }catch(error){
-    //    console.log(error)
-    //   }
-    // }
     const getpost = async () => {
       try {
         const response = await get('/blog/getposts');

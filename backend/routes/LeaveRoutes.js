@@ -6,13 +6,13 @@ const LeaveRoutes = express.Router();
 // Submit a new leave request
 LeaveRoutes.post('/submit', async (req, res) => {
   try {
-    const { employeeID, startDate, endDate, reason } = req.body;
+    const { userID, startDate, endDate, reason } = req.body;
 
-    if (!employeeID || !startDate || !endDate || !reason) {
+    if (!userID || !startDate || !endDate || !reason) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const newLeave = new Leave({ employeeID, startDate, endDate, reason });
+    const newLeave = new Leave({ userID, startDate, endDate, reason });
     await newLeave.save();
 
     res.status(201).json({ message: 'Leave submitted successfully', leave: newLeave });
@@ -23,11 +23,11 @@ LeaveRoutes.post('/submit', async (req, res) => {
 });
 
 // Get leave records for a specific employee
-LeaveRoutes.get('/:employeeID', async (req, res) => {
+LeaveRoutes.get('/:userID', async (req, res) => {
   try {
-    const { employeeID } = req.params;
+    const { userID } = req.params;
 
-    const leaves = await Leave.find({ employeeID });
+    const leaves = await Leave.find({ userID });
     res.status(200).json({ leaves });
   } catch (err) {
     console.error(err);

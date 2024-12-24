@@ -17,35 +17,35 @@ export default function UserProfile() {
     }
 
     try {
-      const response = await axios.get('http://localhost:8000/employee', {
+      const response = await axios.get('http://localhost:8000/users', {
         headers: {
           Authorization: `Bearer ${token}`, // Send token in Authorization header
         },
       });
 
-      // Check if response is successful and contains the required data
       if (response.status === 200 && response.data) {
-        setUserDetails(response.data);
+        setUserDetails(response.data); // Store user details in state
       } else {
         toast.error('Failed to load user details');
       }
     } catch (error) {
-      // Log more detailed error information
-      console.error('Error fetching user details:', error.response?.data || error.message);
-      toast.error(error.response?.data?.message || 'Failed to load user details');
+      console.error('Error fetching user details:', error);
+      toast.error(error.response?.data?.message || error.message || 'Failed to load user details');
+      if (error.response?.status === 401) {
+        toast.error('Unauthorized! Please log in again.');
+        localStorage.removeItem('authToken'); // Clear the token if expired or invalid
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // UseEffect to call fetchUserDetails when component mounts
   useEffect(() => {
     fetchUserDetails();
   }, []);
 
-  // Conditional rendering based on loading and userDetails state
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // You might replace this with a spinner or more elaborate loading message
   }
 
   if (!userDetails) {
@@ -68,7 +68,7 @@ export default function UserProfile() {
         <div className="mt-3">
           <p><strong>Name:</strong> {userDetails.name || 'N/A'}</p>
           <p><strong>Email:</strong> {userDetails.email || 'N/A'}</p>
-          <p><strong>Employee ID:</strong> {userDetails.employeeID || 'N/A'}</p>
+          <p><strong>User ID:</strong> {userDetails.userID || 'N/A'}</p>
           <p><strong>Date of Birth:</strong> {userDetails.dateOfBirth || 'N/A'}</p>
           <p><strong>Department:</strong> {userDetails.department || 'N/A'}</p>
         </div>
