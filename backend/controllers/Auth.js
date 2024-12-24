@@ -16,7 +16,7 @@ const Register = async (req, res) => {
 
     // const imagePath = req.file.filename;
     console.log("req.file:", req.file);
-const imagePath = req.file ? req.file.filename : null;
+    const imagePath = req.file ? req.file.filename : null;
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     const NewUser = new UserModel({

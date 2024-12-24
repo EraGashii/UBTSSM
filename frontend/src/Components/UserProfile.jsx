@@ -17,7 +17,7 @@ export default function UserProfile() {
     }
 
     try {
-      const response = await axios.get('http://localhost:8000/user/me', {
+      const response = await axios.get('http://localhost:8000/employee', {
         headers: {
           Authorization: `Bearer ${token}`, // Send token in Authorization header
         },
