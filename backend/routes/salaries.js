@@ -7,10 +7,11 @@ const SalariesRoutes = express.Router();
 // POST route to add a salary
 SalariesRoutes.post('/', async (req, res) => {
   try {
-    const { department, employee, basicSalary, allowances, deductions, payDate } = req.body;
+    const { userID, department, employee, basicSalary, allowances, deductions, payDate } = req.body;
 
     // Create a new salary entry
     const salary = new Salary({
+      userID,
       department,
       employee,
       basicSalary,
@@ -34,10 +35,11 @@ SalariesRoutes.post('/', async (req, res) => {
 });
 
   // GET route to fetch salary by employee ID
+// GET route to fetch salary by userID
 SalariesRoutes.get('/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
-    const salary = await Salary.findOne({ employee: userID });
+    const salary = await Salary.findOne({ employee: userID }); // Assuming 'employee' is a reference to the userID
 
     if (!salary) {
       return res.status(404).json({ message: 'Salary not found' });
@@ -49,6 +51,7 @@ SalariesRoutes.get('/:userID', async (req, res) => {
     res.status(500).json({ message: 'Error fetching salary', error });
   }
 });
+
 
 // PUT route to update salary
 SalariesRoutes.put('/:userID', async (req, res) => {

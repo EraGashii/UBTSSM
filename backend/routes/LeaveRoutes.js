@@ -4,7 +4,7 @@ import Leave from '../models/Leave.js';
 const LeaveRoutes = express.Router();
 
 // Submit a new leave request
-LeaveRoutes.post('/submit', async (req, res) => {
+LeaveRoutes.post('/', async (req, res) => {
   try {
     const { userID, startDate, endDate, reason } = req.body;
 

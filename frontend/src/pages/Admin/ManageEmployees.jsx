@@ -6,9 +6,9 @@ export default function ManageUsers() {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [showLeaveManagement, setShowLeaveManagement] = useState(false); 
-  const [showUserDetails, setShowUserDetails] = useState(false); 
-  const [showSalaryManager, setShowSalaryManager] = useState(false); 
+  const [showLeaveManagement, setShowLeaveManagement] = useState(false);
+  const [showUserDetails, setShowUserDetails] = useState(false);
+  const [showSalaryManager, setShowSalaryManager] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -24,6 +24,12 @@ export default function ManageUsers() {
     salary: '',
     bonus: '',
     deductions: '',
+  });
+
+  const [leaveData, setLeaveData] = useState({
+    startDate: '',
+    endDate: '',
+    reason: '',
   });
 
   useEffect(() => {
@@ -57,10 +63,10 @@ export default function ManageUsers() {
       }
 
       if (selectedUser) {
-        await axios.put(`http://localhost:8000/user/update/${selectedUser._id}`, data);
+        await axios.put(`http://localhost:8000/users/update/${selectedUser._id}`, data);
         toast.success('User updated successfully');
       } else {
-        await axios.post('http://localhost:8000/user/add', data);
+        await axios.post('http://localhost:8000/users/add', data);
         toast.success('User added successfully');
       }
 
@@ -109,14 +115,27 @@ export default function ManageUsers() {
   const handleSalarySubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:8000/user/salary/${selectedUser._id}`,
-        salaryData
-      );
+      await axios.post(`http://localhost:8000/salaries/${selectedUser.userID}`, salaryData);
       toast.success('Salary details updated');
       setShowSalaryManager(false);
     } catch (error) {
       toast.error('Failed to update salary details');
+    }
+  };
+
+  const handleLeaveChange = (e) => {
+    const { name, value } = e.target;
+    setLeaveData({ ...leaveData, [name]: value });
+  };
+
+  const handleLeaveSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`http://localhost:8000/leave/${selectedUser.userID}`, leaveData);
+      toast.success('Leave details updated');
+      setShowLeaveManagement(false);
+    } catch (error) {
+      toast.error('Failed to update leave details');
     }
   };
 
@@ -302,8 +321,98 @@ export default function ManageUsers() {
                     className="form-control mb-2"
                     onChange={handleSalaryChange}
                   />
-                  <button type="submit" className="btn btn-primary mt-3">
-                    Update Salary
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showUserDetails && selectedUser && (
+  <div
+    className="modal show"
+    style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
+  >
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">User Details</h5>
+          <button
+            type="button"
+            className="close"
+            onClick={() => setShowUserDetails(false)}
+          >
+            <span>&times;</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p><strong>Name:</strong> {selectedUser.name}</p>
+          <p><strong>Email:</strong> {selectedUser.email}</p>
+          <p><strong>User ID:</strong> {selectedUser.userID}</p>
+          <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
+          <p><strong>Department:</strong> {selectedUser.department}</p>
+          <p><strong>Salary:</strong> {selectedUser.salary}</p>
+
+          {selectedUser.image && (
+            <img
+              src={`http://localhost:8000${selectedUser.image}`}
+              alt={selectedUser.name}
+              style={{ width: '100%', height: 'auto' }}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
+      {showLeaveManagement && selectedUser && (
+        <div
+          className="modal show"
+          style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Leave Management</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => setShowLeaveManagement(false)}
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleLeaveSubmit}>
+                  <input
+                    type="date"
+                    placeholder="Start Date"
+                    name="startDate"
+                    value={leaveData.startDate}
+                    className="form-control mb-2"
+                    onChange={handleLeaveChange}
+                  />
+                  <input
+                    type="date"
+                    placeholder="End Date"
+                    name="endDate"
+                    value={leaveData.endDate}
+                    className="form-control mb-2"
+                    onChange={handleLeaveChange}
+                  />
+                  <textarea
+                    placeholder="Reason"
+                    name="reason"
+                    value={leaveData.reason}
+                    className="form-control mb-2"
+                    onChange={handleLeaveChange}
+                  />
+                  <button type="submit" className="btn btn-primary">
+                    Submit
                   </button>
                 </form>
               </div>
