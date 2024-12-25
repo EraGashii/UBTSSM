@@ -45,6 +45,19 @@ export default function ManageUsers() {
     }
   };
 
+  const fetchUserLeaves = async (userID) => {
+    try {
+      console.log(`Fetching leaves for user ID: ${userID}`); // Debugging line
+      const response = await axios.get(`http://localhost:8000/leaves/${userID}`);
+      console.log('Leave records fetched:', response.data);  // Debugging line
+      setLeaveData(response.data);
+    } catch (error) {
+      toast.error('Failed to load leave records');
+      console.error('Error fetching leave records:', error);  // Debugging line
+    }
+  };
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -98,6 +111,7 @@ export default function ManageUsers() {
     } else if (action === 'leave') {
       setSelectedUser(user);
       setShowLeaveManagement(true);
+      fetchUserLeaves(user.userID);  // Fetch leave data for the selected user
     } else if (action === 'view') {
       setSelectedUser(user);
       setShowUserDetails(true);
@@ -115,7 +129,7 @@ export default function ManageUsers() {
   const handleSalarySubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8000/salaries/${selectedUser.userID}`, salaryData);
+      await axios.post('http://localhost:8000/salaries', { ...salaryData, userID: selectedUser.userID });
       toast.success('Salary details updated');
       setShowSalaryManager(false);
     } catch (error) {
@@ -127,17 +141,22 @@ export default function ManageUsers() {
     const { name, value } = e.target;
     setLeaveData({ ...leaveData, [name]: value });
   };
-
+  
   const handleLeaveSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8000/leave/${selectedUser.userID}`, leaveData);
+      // Ensure that the userID is correctly attached to the leaveData
+      const leaveDataWithUserID = { ...leaveData, userID: selectedUser.userID };
+  
+      // Post the leave data along with the userID
+      await axios.post('http://localhost:8000/leave', leaveDataWithUserID);
       toast.success('Leave details updated');
       setShowLeaveManagement(false);
     } catch (error) {
       toast.error('Failed to update leave details');
     }
   };
+  
 
   return (
     <div className="container mt-4">
@@ -298,7 +317,7 @@ export default function ManageUsers() {
               <div className="modal-body">
                 <form onSubmit={handleSalarySubmit}>
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Salary"
                     name="salary"
                     value={salaryData.salary}
@@ -306,7 +325,7 @@ export default function ManageUsers() {
                     onChange={handleSalaryChange}
                   />
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Bonus"
                     name="bonus"
                     value={salaryData.bonus}
@@ -314,7 +333,7 @@ export default function ManageUsers() {
                     onChange={handleSalaryChange}
                   />
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Deductions"
                     name="deductions"
                     value={salaryData.deductions}
@@ -322,7 +341,7 @@ export default function ManageUsers() {
                     onChange={handleSalaryChange}
                   />
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Update Salary
                   </button>
                 </form>
               </div>
@@ -330,44 +349,6 @@ export default function ManageUsers() {
           </div>
         </div>
       )}
-      {showUserDetails && selectedUser && (
-  <div
-    className="modal show"
-    style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
-  >
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title">User Details</h5>
-          <button
-            type="button"
-            className="close"
-            onClick={() => setShowUserDetails(false)}
-          >
-            <span>&times;</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <p><strong>Name:</strong> {selectedUser.name}</p>
-          <p><strong>Email:</strong> {selectedUser.email}</p>
-          <p><strong>User ID:</strong> {selectedUser.userID}</p>
-          <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
-          <p><strong>Department:</strong> {selectedUser.department}</p>
-          <p><strong>Salary:</strong> {selectedUser.salary}</p>
-
-          {selectedUser.image && (
-            <img
-              src={`http://localhost:8000${selectedUser.image}`}
-              alt={selectedUser.name}
-              style={{ width: '100%', height: 'auto' }}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
 
       {showLeaveManagement && selectedUser && (
         <div
@@ -390,7 +371,6 @@ export default function ManageUsers() {
                 <form onSubmit={handleLeaveSubmit}>
                   <input
                     type="date"
-                    placeholder="Start Date"
                     name="startDate"
                     value={leaveData.startDate}
                     className="form-control mb-2"
@@ -398,23 +378,50 @@ export default function ManageUsers() {
                   />
                   <input
                     type="date"
-                    placeholder="End Date"
                     name="endDate"
                     value={leaveData.endDate}
                     className="form-control mb-2"
                     onChange={handleLeaveChange}
                   />
                   <textarea
-                    placeholder="Reason"
                     name="reason"
+                    placeholder="Reason for leave"
                     value={leaveData.reason}
                     className="form-control mb-2"
                     onChange={handleLeaveChange}
-                  />
+                  ></textarea>
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Submit Leave
                   </button>
                 </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUserDetails && selectedUser && (
+        <div
+          className="modal show"
+          style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">User Details</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={() => setShowUserDetails(false)}
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p><strong>Name:</strong> {selectedUser.name}</p>
+                <p><strong>Email:</strong> {selectedUser.email}</p>
+                <p><strong>Department:</strong> {selectedUser.department}</p>
+                <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
               </div>
             </div>
           </div>
@@ -423,3 +430,5 @@ export default function ManageUsers() {
     </div>
   );
 }
+
+
