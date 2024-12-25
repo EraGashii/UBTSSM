@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import LeaveManagement from './LeaveManagement';
-import SalaryManager from './SalaryManager';
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [showLeaveManagement, setShowLeaveManagement] = useState(false);
-  const [showUserDetails, setShowUserDetails] = useState(false);
-  const [showSalaryManager, setShowSalaryManager] = useState(false);
+  const [showLeaveManagement, setShowLeaveManagement] = useState(false); 
+  const [showUserDetails, setShowUserDetails] = useState(false); 
+  const [showSalaryManager, setShowSalaryManager] = useState(false); 
 
   const [formData, setFormData] = useState({
     name: '',
@@ -18,9 +16,14 @@ export default function ManageUsers() {
     userID: '',
     dateOfBirth: '',
     department: '',
-    salary: '', // Added salary field
     image: null,
     password: '',
+  });
+
+  const [salaryData, setSalaryData] = useState({
+    salary: '',
+    bonus: '',
+    deductions: '',
   });
 
   useEffect(() => {
@@ -54,10 +57,10 @@ export default function ManageUsers() {
       }
 
       if (selectedUser) {
-        await axios.put(`http://localhost:8000/users/update/${selectedUser._id}`, data);
+        await axios.put(`http://localhost:8000/user/update/${selectedUser._id}`, data);
         toast.success('User updated successfully');
       } else {
-        await axios.post('http://localhost:8000/users/add', data);
+        await axios.post('http://localhost:8000/user/add', data);
         toast.success('User added successfully');
       }
 
@@ -78,7 +81,6 @@ export default function ManageUsers() {
       userID: user.userID,
       dateOfBirth: user.dateOfBirth,
       department: user.department,
-      salary: user.salary, // Include salary in edit form
       image: null,
       password: '',
     });
@@ -99,6 +101,25 @@ export default function ManageUsers() {
     }
   };
 
+  const handleSalaryChange = (e) => {
+    const { name, value } = e.target;
+    setSalaryData({ ...salaryData, [name]: value });
+  };
+
+  const handleSalarySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/user/salary/${selectedUser._id}`,
+        salaryData
+      );
+      toast.success('Salary details updated');
+      setShowSalaryManager(false);
+    } catch (error) {
+      toast.error('Failed to update salary details');
+    }
+  };
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between mb-4">
@@ -114,7 +135,6 @@ export default function ManageUsers() {
               userID: '',
               dateOfBirth: '',
               department: '',
-              salary: '', // Reset salary field
               password: '',
               image: null,
             });
@@ -167,14 +187,13 @@ export default function ManageUsers() {
             onChange={handleChange}
           />
           <input
-            type="text"
-            placeholder="Salary"
-            name="salary"
-            value={formData.salary}
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={formData.password}
             className="form-control mb-2"
             onChange={handleChange}
           />
-          <input type="password" placeholder="Password" name="password" className="form-control mb-2" onChange={handleChange} />
           <input type="file" className="form-control mb-3" onChange={handleFileChange} />
           <button type="submit" className="btn btn-primary">
             {selectedUser ? 'Update User' : 'Submit'}
@@ -189,7 +208,6 @@ export default function ManageUsers() {
               <th>Name</th>
               <th>Email</th>
               <th>Department</th>
-              <th>Salary</th> {/* Added salary column */}
               <th>Action</th>
             </tr>
           </thead>
@@ -209,18 +227,29 @@ export default function ManageUsers() {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.department}</td>
-                <td>{user.salary}</td> {/* Display salary */}
                 <td>
-                  <button className="btn btn-info btn-sm me-2" onClick={() => handleAction('view', user)}>
+                  <button
+                    className="btn btn-info btn-sm me-2"
+                    onClick={() => handleAction('view', user)}
+                  >
                     View
                   </button>
-                  <button className="btn btn-warning btn-sm me-2" onClick={() => handleAction('edit', user)}>
+                  <button
+                    className="btn btn-warning btn-sm me-2"
+                    onClick={() => handleAction('edit', user)}
+                  >
                     Edit
                   </button>
-                  <button className="btn btn-success btn-sm me-2" onClick={() => handleAction('salary', user)}>
+                  <button
+                    className="btn btn-success btn-sm me-2"
+                    onClick={() => handleAction('salary', user)}
+                  >
                     Salary
                   </button>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleAction('leave', user)}>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleAction('leave', user)}
+                  >
                     Leave
                   </button>
                 </td>
@@ -230,24 +259,7 @@ export default function ManageUsers() {
         </table>
       )}
 
-      {showLeaveManagement && selectedUser && (
-        <LeaveManagement
-          userID={selectedUser.userID}
-          onBack={() => {
-            setShowLeaveManagement(false);
-            setSelectedUser(null);
-          }}
-        />
-      )}
-
       {showSalaryManager && selectedUser && (
-        <SalaryManager
-          user={selectedUser}
-          onClose={() => setShowSalaryManager(false)}
-        />
-      )}
-
-      {showUserDetails && selectedUser && (
         <div
           className="modal show"
           style={{ display: 'block', position: 'fixed', top: 0, left: 0, zIndex: 1050 }}
@@ -255,40 +267,45 @@ export default function ManageUsers() {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">User Details</h5>
+                <h5 className="modal-title">Salary Details</h5>
                 <button
                   type="button"
                   className="close"
-                  onClick={() => setShowUserDetails(false)}
+                  onClick={() => setShowSalaryManager(false)}
                 >
                   <span>&times;</span>
                 </button>
               </div>
               <div className="modal-body">
-                <p><strong>Name:</strong> {selectedUser.name}</p>
-                <p><strong>Email:</strong> {selectedUser.email}</p>
-                <p><strong>User ID:</strong> {selectedUser.userID}</p>
-                <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
-                <p><strong>Department:</strong> {selectedUser.department}</p>
-                <p><strong>Salary:</strong> {selectedUser.salary}</p> {/* Show salary in modal */}
-                {selectedUser.image && (
-                  <img
-                    src={`http://localhost:8000${selectedUser.image}`}
-                    alt={selectedUser.name}
-                    width="150"
-                    height="150"
-                    className="rounded-circle"
+                <form onSubmit={handleSalarySubmit}>
+                  <input
+                    type="number"
+                    placeholder="Salary"
+                    name="salary"
+                    value={salaryData.salary}
+                    className="form-control mb-2"
+                    onChange={handleSalaryChange}
                   />
-                )}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowUserDetails(false)}
-                >
-                  Close
-                </button>
+                  <input
+                    type="number"
+                    placeholder="Bonus"
+                    name="bonus"
+                    value={salaryData.bonus}
+                    className="form-control mb-2"
+                    onChange={handleSalaryChange}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Deductions"
+                    name="deductions"
+                    value={salaryData.deductions}
+                    className="form-control mb-2"
+                    onChange={handleSalaryChange}
+                  />
+                  <button type="submit" className="btn btn-primary mt-3">
+                    Update Salary
+                  </button>
+                </form>
               </div>
             </div>
           </div>
