@@ -58,11 +58,14 @@ export default function UserProfile() {
           />
         </div>
         <div className="mt-3">
-          <p><strong>Name:</strong> {userDetails.name || 'N/A'}</p>
-          <p><strong>Email:</strong> {userDetails.email || 'N/A'}</p>
-          <p><strong>User ID:</strong> {userDetails.userID || 'N/A'}</p>
-          <p><strong>Date of Birth:</strong> {userDetails.dateOfBirth || 'N/A'}</p>
-          <p><strong>Department:</strong> {userDetails.department || 'N/A'}</p>
+          <p><strong>Name:</strong> {userDetails.name || 'Not Available'}</p>
+          <p><strong>Email:</strong> {userDetails.email || 'Not Available'}</p>
+          <p><strong>User ID:</strong> {userDetails.userID || 'Not Available'}</p>
+          <p><strong>Date of Birth:</strong> {new Date(userDetails.dateOfBirth).toLocaleDateString() || 'Not Available'}</p>
+          <p><strong>Department:</strong> {userDetails.department || 'Not Available'}</p>
+          <p><strong>Designation:</strong> {userDetails.designation || 'Not Available'}</p>
+          <p><strong>Gender:</strong> {userDetails.gender || 'Not Available'}</p>
+          <p><strong>Marital Status:</strong> {userDetails.maritalStatus || 'Not Available'}</p>
         </div>
       </div>
     </div>
