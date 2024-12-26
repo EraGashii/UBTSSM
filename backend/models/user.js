@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   maritalStatus: { type: String },
   designation: { type: String },
   department: { type: String },
-  salary: { type: Number },
+  salary: { type: Number, required: true, },
   password: { type: String, required: true },
   role: { type: String },
   image: { type: String }, // File path for the uploaded image

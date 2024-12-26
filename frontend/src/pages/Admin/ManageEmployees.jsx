@@ -18,6 +18,7 @@ export default function ManageUsers() {
     department: '',
     image: null,
     password: '',
+    salary: '',
   });
 
   const [salaryData, setSalaryData] = useState({
@@ -66,7 +67,6 @@ export default function ManageUsers() {
   const handleFileChange = (e) => {
     setFormData({ ...formData, image: e.target.files[0] });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -74,15 +74,17 @@ export default function ManageUsers() {
       for (const key in formData) {
         data.append(key, formData[key]);
       }
-
+  
       if (selectedUser) {
+        // Update user
         await axios.put(`http://localhost:8000/users/update/${selectedUser._id}`, data);
         toast.success('User updated successfully');
       } else {
+        // Add new user
         await axios.post('http://localhost:8000/users/add', data);
         toast.success('User added successfully');
       }
-
+  
       fetchUsers();
       setShowForm(false);
       setSelectedUser(null);
@@ -90,7 +92,7 @@ export default function ManageUsers() {
       toast.error('Failed to submit user');
     }
   };
-
+  
   const handleEdit = (user) => {
     setSelectedUser(user);
     setShowForm(true);
@@ -100,10 +102,17 @@ export default function ManageUsers() {
       userID: user.userID,
       dateOfBirth: user.dateOfBirth,
       department: user.department,
+      salary: user.salary || '',
       image: null,
       password: '',
     });
+    setSalaryData({
+      salary: user.salary || '',
+      bonus: '',
+      deductions: '',
+    });
   };
+  
 
   const handleAction = (action, user) => {
     if (action === 'edit') {
@@ -129,13 +138,19 @@ export default function ManageUsers() {
   const handleSalarySubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8000/salaries', { ...salaryData, userID: selectedUser.userID });
+      const response = await axios.post('http://localhost:8000/salaries', { 
+        ...salaryData, 
+        userID: selectedUser.userID 
+      });
       toast.success('Salary details updated');
       setShowSalaryManager(false);
+      fetchUsers();  // Refresh user list
     } catch (error) {
       toast.error('Failed to update salary details');
     }
   };
+  
+  
 
   const handleLeaveChange = (e) => {
     const { name, value } = e.target;
@@ -224,6 +239,15 @@ export default function ManageUsers() {
             className="form-control mb-2"
             onChange={handleChange}
           />
+           <input
+            type="text"
+            placeholder="Salary"
+            name="salary"
+            value={formData.salary}
+            className="form-control mb-2"
+            onChange={handleChange}
+          />
+          
           <input
             type="password"
             placeholder="Password"
@@ -420,6 +444,7 @@ export default function ManageUsers() {
               <div className="modal-body">
                 <p><strong>Name:</strong> {selectedUser.name}</p>
                 <p><strong>Email:</strong> {selectedUser.email}</p>
+                <p><strong>Salary:</strong> {selectedUser.salary}</p>
                 <p><strong>Department:</strong> {selectedUser.department}</p>
                 <p><strong>Date of Birth:</strong> {selectedUser.dateOfBirth}</p>
               </div>

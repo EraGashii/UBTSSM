@@ -62,3 +62,13 @@ app.use('/salaries', SalariesRoutes); // <-- Add this line for salary routes
 app.listen(PORT, () => {
   console.log(`App is running on Port ${PORT}`);
 });
+// In your backend server (e.g., app.js or server.js)
+app.post('/salaries', async (req, res) => {
+  try {
+    const { salary } = req.body;  // Assuming salary is in the request body
+    // Logic to handle salary submission
+    res.status(200).json({ message: "Salary updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error submitting salary" });
+  }
+});
