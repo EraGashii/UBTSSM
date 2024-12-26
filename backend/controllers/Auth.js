@@ -46,7 +46,7 @@ const Login = async (req, res) => {
     if (!comparePassword) {
       return res.status(400).json({ success: false, message: 'Invalid password' });
     }
-    const token = jwt.sign({ userId: FindUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: FindUser.userID }, process.env.JWT_SECRET);
     res.cookie('token', token, {
       httpOnly: true,
       secure: false,

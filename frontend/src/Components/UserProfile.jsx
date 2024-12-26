@@ -8,19 +8,10 @@ export default function UserProfile() {
 
   // Function to fetch user details
   const fetchUserDetails = async () => {
-    const token = localStorage.getItem('authToken', token); // Retrieve the token from localStorage
-
-    if (!token) {
-      toast.error('No token found, please log in.');
-      setLoading(false);
-      return;
-    }
-
     try {
+      // Use axios with credentials to include cookies automatically
       const response = await axios.get('http://localhost:8000/users', {
-        headers: {
-          Authorization: `Bearer ${token}`, // Send token in Authorization header
-        },
+        withCredentials: true, // Ensures cookies are sent with the request
       });
 
       if (response.status === 200 && response.data) {
@@ -30,10 +21,11 @@ export default function UserProfile() {
       }
     } catch (error) {
       console.error('Error fetching user details:', error);
-      toast.error(error.response?.data?.message || error.message || 'Failed to load user details');
+      toast.error(
+        error.response?.data?.message || error.message || 'Failed to load user details'
+      );
       if (error.response?.status === 401) {
         toast.error('Unauthorized! Please log in again.');
-        localStorage.removeItem('authToken'); // Clear the token if expired or invalid
       }
     } finally {
       setLoading(false);

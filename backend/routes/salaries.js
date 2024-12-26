@@ -10,7 +10,7 @@ SalariesRoutes.put("/updateSalary/:id", async (req, res) => {
     const { id } = req.params;
     const { salary } = req.body;  // Make sure the request body contains the salary field
     const updatedUser = await User.findOneAndUpdate(
-      { _id: id },  // Search by the user ID
+      { userID: id },  // Search by the user ID
       { salary },    // Update only the salary field
       { new: true }  // Return the updated user object
     );
@@ -55,7 +55,7 @@ SalariesRoutes.put('/update/:id', async (req, res) => {
     }
 
     // Find the user by ID
-    const user = await User.findById(id);
+    const user = await Salary.findById(id);
 
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
