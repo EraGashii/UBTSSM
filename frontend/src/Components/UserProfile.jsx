@@ -8,7 +8,7 @@ export default function UserProfile() {
 
   // Function to fetch user details
   const fetchUserDetails = async () => {
-    const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+    const token = localStorage.getItem('authToken', token); // Retrieve the token from localStorage
 
     if (!token) {
       toast.error('No token found, please log in.');

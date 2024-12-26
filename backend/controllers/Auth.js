@@ -5,7 +5,7 @@ import upload from '../middleware/multer.js';
 
 const Register = async (req, res) => {
   try {
-    const { FullName, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const existUser = await User.findOne({ email });
     if (existUser) {
@@ -16,7 +16,7 @@ const Register = async (req, res) => {
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     const NewUser = new User({
-      FullName,
+      name,
       email,
       password: hashedPassword,
       profile: imagePath,

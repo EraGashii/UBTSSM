@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'; // For password hashing
 // Controller to fetch user profile
 export const getUserProfile = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming `isUserRole` middleware sets `req.user`
+    const userId = req.user.userID; // Assuming `isUserRole` middleware sets `req.user`
     const user = await User.findById(userId);
 
     if (!user) {
@@ -31,7 +31,7 @@ export const updateProfile = async (req, res) => {
   const profileImage = req.file; // Multer stores uploaded file in req.file
 
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user.userID);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -59,7 +59,7 @@ export const updateProfile = async (req, res) => {
     }
 
     // Update user in the database
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, updateData, {
+    const updatedUser = await User.findByIdAndUpdate(req.user.userID, updateData, {
       new: true, // Return the updated user object
     });
 
