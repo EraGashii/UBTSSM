@@ -30,7 +30,14 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar d-flex justify-content-between align-items-center p-3">
-        <Link to={'/'}><h1 className="mx-5 text-white fs-2 fw-bold">UBTSSM</h1></Link>
+        <Link to={'/'} className="d-flex align-items-center">
+          <img 
+            src="images/ubt.jpg"  
+            alt="Logo" 
+            style={{ width: '40px', height: '40px', objectFit: 'contain', marginRight: '10px' }} 
+          />
+          <h1 className="mx-2 text-white fs-2 fw-bold">UBTSSM</h1>
+        </Link>
         <div className="d-flex align-items-center">
           {!user ? (
             <Link to={'/login'}>
