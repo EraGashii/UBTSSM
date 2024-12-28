@@ -1,40 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import "../../index.css"; // Add this for external styles
 
 export default function Dashboard() {
-  const [post, setPost] = useState([]);  // Default empty array
-  const [users, setUsers] = useState([]);  // Default empty array
-  const [comments, setComments] = useState([]);  // Default empty array
-  const [loading, setLoading] = useState(true);  // To handle loading state
+  const [data, setData] = useState({
+    posts: [],
+    users: [],
+    comments: [],
+    loading: true,
+  });
 
   useEffect(() => {
-    const GetData = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/dashboard');
-        const data = response.data;
-
-        console.log(data);  // Log the response for debugging
-        
-        // Make sure data is fetched correctly
-        if (data.success) {
-          setPost(data.Posts || []);  // Set empty array if Posts is undefined
-          setUsers(data.Users || []);  // Set empty array if Users is undefined
-          setComments(data.Comments || []);  // Set empty array if Comments is undefined
+        if (response.data.success) {
+          setData({
+            posts: response.data.Posts || [],
+            users: response.data.Users || [],
+            comments: response.data.Comments || [],
+            loading: false,
+          });
         }
       } catch (error) {
-        console.log(error);  // Log any errors that occur during the fetch
-      } finally {
-        setLoading(false);  // Set loading to false once data is fetched
+        console.error('Failed to fetch data:', error);
+        setData((prev) => ({ ...prev, loading: false }));
       }
     };
 
-    GetData();
-  }, []);  // Empty dependency array ensures this runs only once when the component mounts
+    fetchData();
+  }, []);
 
-  // Conditional rendering to show loading indicator until data is fetched
-  if (loading) {
-    return <div>Loading...</div>;
+  if (data.loading) {
+    return <div className="spinner-border text-primary" role="status"></div>;
   }
 
   return (
@@ -45,24 +43,24 @@ export default function Dashboard() {
           <div className="col-md-4 col-lg-4 col-sm-4 col-12">
             <div className="card bg-primary text-white mb-4">
               <div className="card-body">
-                <h5 className="card-title">Total Employees</h5>
-                <p className="card-text">{users.length || 0}</p> {/* Display users count */}
+                <h5 className="card-title"><i className="fas fa-users me-2" style={{ fontSize: '20px' }}></i> Total Employees</h5>
+                <p className="card-text">{data.users.length > 0 ? data.users.length : 'Track and manage your employees here'}</p>
               </div>
             </div>
           </div>
           <div className="col-md-4 col-lg-4 col-sm-4 col-12">
-            <div className="card bg-success text-white mb-4">
+            <div className="card bg-primary text-white mb-4">
               <div className="card-body">
-                <h5 className="card-title">Total Departments</h5>
-                <p className="card-text">{post.length || 0}</p> {/* Display posts count */}
+                <h5 className="card-title"><i className="fas fa-building me-2" style={{ fontSize: '20px' }}></i> Total Departments</h5>
+                <p className="card-text">{data.posts.length > 0 ? data.posts.length : 'Organize and monitor departments effectively'}</p>
               </div>
             </div>
           </div>
           <div className="col-md-4 col-lg-4 col-sm-4 col-12">
-            <div className="card bg-warning text-white mb-4">
+            <div className="card bg-primary text-white mb-4">
               <div className="card-body">
-                <h5 className="card-title">Monthly Pay</h5>
-                <p className="card-text">{comments.length || 0}</p> {/* Display comments count */}
+                <h5 className="card-title"><i className="fas fa-dollar-sign me-2" style={{ fontSize: '20px' }}></i> Monthly Pay</h5>
+                <p className="card-text">{data.comments.length > 0 ? data.comments.length : 'Monitor salary and payment details here'}</p>
               </div>
             </div>
           </div>
