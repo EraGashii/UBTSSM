@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import axios for API requests
 import logo from '../assets/ubt.png'; // Import the logo image
+import toast from 'react-hot-toast'
+
 
 export default function Register() {
   const [value, setValue] = useState({
@@ -19,6 +21,9 @@ export default function Register() {
     });
   };
 
+
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -31,9 +36,10 @@ export default function Register() {
       });
 
       if (response.data.message === 'User created successfully') {
-        alert('Registration successful!');
         // Redirect to login page or home page after successful registration
       }
+      toast.success('Registration successful!');
+
     } catch (error) {
       setError(error.response?.data?.message || 'Something went wrong');
     } finally {

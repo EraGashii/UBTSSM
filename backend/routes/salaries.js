@@ -5,39 +5,32 @@ import Salary from '../models/Salary.js'; // Import the Salary model
 const SalariesRoutes = express.Router();
 
 // POST route to add a salary
-SalariesRoutes.post('/', async (req, res) => {
+SalariesRoutes.put("/updateSalary/:id", async (req, res) => {
   try {
-    const { department, employee, basicSalary, allowances, deductions, payDate } = req.body;
+    const { id } = req.params;
+    const { salary } = req.body;  // Make sure the request body contains the salary field
+    const updatedUser = await User.findOneAndUpdate(
+      { userID: id },  // Search by the user ID
+      { salary },    // Update only the salary field
+      { new: true }  // Return the updated user object
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    // Create a new salary entry
-    const salary = new Salary({
-      department,
-      employee,
-      basicSalary,
-      allowances,
-      deductions,
-      payDate,
-    });
-
-    // Save the salary to the database
-    await salary.save();
-
-    // Send a response back to the client
-    res.status(201).json({
-      message: 'Salary added successfully!',
-      salaryData: salary,
-    });
+    res.status(200).json({ message: "Salary updated successfully", user: updatedUser });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error adding salary', error });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
+  
   // GET route to fetch salary by employee ID
-SalariesRoutes.get('/:employeeId', async (req, res) => {
+// GET route to fetch salary by userID
+SalariesRoutes.get('/:userID', async (req, res) => {
   try {
-    const { employeeId } = req.params;
-    const salary = await Salary.findOne({ employee: employeeId });
+    const { userID } = req.params;
+    const salary = await Salary.findOne({ employee: userID }); // Assuming 'employee' is a reference to the userID
 
     if (!salary) {
       return res.status(404).json({ message: 'Salary not found' });
@@ -50,32 +43,38 @@ SalariesRoutes.get('/:employeeId', async (req, res) => {
   }
 });
 
+
 // PUT route to update salary
-SalariesRoutes.put('/:employeeId', async (req, res) => {
+SalariesRoutes.put('/update/:id', async (req, res) => {
   try {
-    const { employeeId } = req.params;
-    const updates = req.body;
+    const { id } = req.params;
+    const { salary, bonus } = req.body; // Assume you're adding a bonus
 
-    // Find and update the salary
-    const salary = await Salary.findOneAndUpdate(
-      { employee: employeeId },
-      { $set: updates },
-      { new: true }
-    );
-
-    if (!salary) {
-      return res.status(404).json({ message: 'Salary not found' });
+    if (salary && isNaN(salary)) {
+      return res.status(400).json({ success: false, message: 'Invalid salary value' });
     }
 
-    res.status(200).json({
-      message: 'Salary updated successfully!',
-      salaryData: salary,
-    });
+    // Find the user by ID
+    const user = await Salary.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Update salary and optionally calculate new values with bonus
+    if (salary) user.salary = salary;
+    if (bonus) user.salary += bonus; // Example: Add a bonus to the salary
+
+    // Save the updated user document
+    const updatedUser = await user.save();
+
+    res.status(200).json({ success: true, message: 'Salary updated successfully', user: updatedUser });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error updating salary', error });
+    console.error('Error updating salary:', error.message);
+    res.status(500).json({ success: false, message: 'Failed to update salary details' });
   }
 });
+
 
 
 export default SalariesRoutes;

@@ -19,16 +19,6 @@ export default function Sidebar() {
               </Link>
             </li>
             <li className="nav-item mb-3">
-              <Link to={'/dashboard/users'} className="nav-link text-white">
-                <FaUsers className="me-2" /> Users
-              </Link>
-            </li>
-            <li className="nav-item mb-3">
-              <Link to={'/dashboard/allposts'} className="nav-link text-white">
-                <FaFileAlt className="me-2" /> Employees Datas
-              </Link>
-            </li>
-            <li className="nav-item mb-3">
               <Link to={'/dashboard/department'} className="nav-link text-white">
                 <FaFileAlt className="me-2" /> Department
               </Link>

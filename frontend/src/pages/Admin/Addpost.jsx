@@ -7,7 +7,7 @@
 //   const [formData, setFormData] = useState({
 //     name: '',
 //     email: '',
-//     employeeID: '',
+//     userID: '',
 //     dateOfBirth: '',
 //     department: '',
 //     image: null,
@@ -52,7 +52,7 @@
 //       setFormData({
 //         name: '',
 //         email: '',
-//         employeeID: '',
+//         userID: '',
 //         dateOfBirth: '',
 //         department: '',
 //         image: null,
@@ -108,8 +108,8 @@
 //                   <input
 //                     type="text"
 //                     className="form-control"
-//                     name="employeeID"
-//                     value={formData.employeeID}
+//                     name="userID"
+//                     value={formData.userID}
 //                     onChange={handleChange}
 //                   />
 //                 </div>

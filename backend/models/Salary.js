@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 
 const salarySchema = new mongoose.Schema({
+  userID: { type: String, required: true, unique: true },
   department: { type: String, required: true },
   employee: { type: String, required: true },
   basicSalary: { type: Number, required: true },

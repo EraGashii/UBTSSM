@@ -1,22 +1,43 @@
-import UserModel from '../models/user.js'; // Assuming you have a User model
-// import bcrypt from 'bcrypt';
-import bcrypt from 'bcryptjs';
-//const path = require('path');
+import User from '../models/user.js'; // Assuming you have a User model
+import bcrypt from 'bcryptjs'; // For password hashing
 
-// Function to update the profile
-export const updateProfile = async (req, res) => {
-  const { name, oldPassword, newPassword } = req.body;
-  const profileImage = req.file; // Multer stores uploaded file in req.file
-
+// Controller to fetch user profile
+export const getUserProfile = async (req, res) => {
   try {
-    // Get the current user from the request (assuming authentication middleware)
-    const user = await UserModel.findById(req.user._id);
+    const userId = req.user.userID; // Assuming `isUserRole` middleware sets `req.user`
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Check if the old password matches (if provided)
+    res.status(200).json({
+      name: user.name,
+      email: user.email,
+      userID: user.userID,
+      dateOfBirth: user.dateOfBirth,
+      department: user.department,
+      image: user.profileImage || '/default-avatar.png',
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Controller to update the user profile
+export const updateProfile = async (req, res) => {
+  const { name, oldPassword, newPassword } = req.body;
+  const profileImage = req.file; // Multer stores uploaded file in req.file
+
+  try {
+    const user = await User.findById(req.user.userID);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify old password if provided
     if (oldPassword && !bcrypt.compareSync(oldPassword, user.password)) {
       return res.status(400).json({ message: 'Old password is incorrect' });
     }
@@ -29,27 +50,24 @@ export const updateProfile = async (req, res) => {
     }
 
     if (newPassword) {
-      // If a new password is provided, hash it before saving
       const hashedPassword = bcrypt.hashSync(newPassword, 10);
       updateData.password = hashedPassword;
     }
 
     if (profileImage) {
-      // If a profile image is uploaded, store the path in the database
-      updateData.profileImagePath = profileImage.path;
+      updateData.profileImage = profileImage.path; // Update profile image path
     }
 
-    // Update the user in the database
-    const updatedUser = await UserModel.findByIdAndUpdate(req.user._id, updateData, {
+    // Update user in the database
+    const updatedUser = await User.findByIdAndUpdate(req.user.userID, updateData, {
       new: true, // Return the updated user object
     });
 
-    // Respond with the updated user data (excluding password for security reasons)
     res.status(200).json({
       message: 'Profile updated successfully!',
       user: {
         name: updatedUser.name,
-        profileImagePath: updatedUser.profileImagePath,
+        profileImage: updatedUser.profileImage || '/default-avatar.png',
       },
     });
   } catch (error) {

@@ -10,11 +10,10 @@ import AuthRouters from './routes/Auth.js';
 import BlogsRouters from './routes/Blog.js';
 import UsersRoutes from './routes/Users.js';
 import profileRoutes from './routes/profileRoutes.js';
-// import EmployeeRouters from './routes/Employee.js';
 import DepartmentRoutes from './routes/Department.js';
 import LeaveRoutes from './routes/LeaveRoutes.js';
 import SalariesRoutes from './routes/salaries.js';
-// import employeeRoutes from './routes/employeeRoutes.js';
+
 
 
 dotenv.config();
@@ -52,8 +51,7 @@ DBCon();
 app.use('/auth', AuthRouters);
 app.use('/blog', BlogsRouters);
 app.use('/users', UsersRoutes);
-app.use('/profile', profileRoutes);
-// app.use('/employee', EmployeeRouters);
+app.use('/users/profile', profileRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);
@@ -63,4 +61,14 @@ app.use('/salaries', SalariesRoutes); // <-- Add this line for salary routes
 // Start server
 app.listen(PORT, () => {
   console.log(`App is running on Port ${PORT}`);
+});
+// In your backend server (e.g., app.js or server.js)
+app.post('/salaries', async (req, res) => {
+  try {
+    const { salary } = req.body;  // Assuming salary is in the request body
+    // Logic to handle salary submission
+    res.status(200).json({ message: "Salary updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error submitting salary" });
+  }
 });

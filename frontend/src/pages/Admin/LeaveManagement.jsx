@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-export default function LeaveManagement({ employeeID, onBack }) {
+export default function LeaveManagement({ userID, onBack }) {
   const [leaves, setLeaves] = useState([]);
   const [formData, setFormData] = useState({
     leaveType: '',
@@ -14,12 +14,12 @@ export default function LeaveManagement({ employeeID, onBack }) {
 
   useEffect(() => {
     fetchLeaves();
-  }, [employeeID]);
+  }, [userID]);
 
   const fetchLeaves = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/leave?employeeID=${employeeID}`
+        `http://localhost:8000/leave?userID=${userID}`
       );
       setLeaves(response.data.data);
     } catch (error) {
@@ -36,7 +36,7 @@ export default function LeaveManagement({ employeeID, onBack }) {
     try {
       await axios.post('http://localhost:8000/leave/submit', {
         ...formData,
-        employeeID,
+        userID,
       });
       toast.success('Leave request added');
       fetchLeaves();
@@ -62,7 +62,7 @@ export default function LeaveManagement({ employeeID, onBack }) {
       {/* Header */}
       <h3 className="mb-4 text-primary">Leave Management</h3>
       <p className="text-muted">
-        Managing leave requests for Employee ID: <strong>{employeeID}</strong>
+        Managing leave requests for Employee ID: <strong>{userID}</strong>
       </p>
 
       {/* Leave Request Form */}
