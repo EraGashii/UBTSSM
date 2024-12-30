@@ -51,10 +51,11 @@ const AddSalaryForm = () => {
           <select name="department" value={formData.department} onChange={handleChange} required
                   style={{ width: '100%', padding: '10px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ccc', outline: 'none' }}>
             <option value="">Select Department</option>
-            <option value="HR">HR</option>
-            <option value="Finance">Finance</option>
-            <option value="IT">IT</option>
-            <option value="Sales">Sales</option>
+            <option value="Shkenca Kompjuterike dhe Inxhinieri">Shkenca Kompjuterike dhe Inxhinieri</option>
+            <option value="Sistemi i informacionit">Sistemet e Informacionit</option>
+            <option value="Inxhinieri e Mekatronikes">Inxhinieri e Mekatronikes</option>
+            <option value="Menaxhment, Biznes dhe Ekonomi">Menaxhment, Biznes dhe Ekonomi</option>
+            <option value="Arkitekture">Arkitekture</option>
           </select>
         </div>
 
@@ -63,8 +64,11 @@ const AddSalaryForm = () => {
           <select name="employee" value={formData.employee} onChange={handleChange} required
                   style={{ width: '100%', padding: '10px', fontSize: '14px', borderRadius: '4px', border: '1px solid #ccc', outline: 'none' }}>
             <option value="">Select Employee</option>
-            <option value="John Doe">John Doe</option>
-            <option value="Jane Smith">Jane Smith</option>
+            <option value="Astrit Hulaj">Astrit Hulaj</option>
+            <option value="Besnik Qehaja">Besnik Qehaja</option>
+            <option value="Bertan Karahoda">Bertan Karahoda</option>
+            <option value="Blerton Abazi">Blerton Abazi</option>
+            <option value="Modest Gashi">Modest Gashi</option>
           </select>
         </div>
 

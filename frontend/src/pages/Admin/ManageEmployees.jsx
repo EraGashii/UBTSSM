@@ -303,12 +303,6 @@ export default function ManageUsers() {
                     Edit
                   </button>
                   <button
-                    className="btn btn-success btn-sm me-2"
-                    onClick={() => handleAction('salary', user)}
-                  >
-                    Salary
-                  </button>
-                  <button
                     className="btn btn-danger btn-sm"
                     onClick={() => handleAction('leave', user)}
                   >
