@@ -46,12 +46,13 @@ const Login = async (req, res) => {
     if (!comparePassword) {
       return res.status(400).json({ success: false, message: 'Invalid password' });
     }
-    const token = jwt.sign({ userId: FindUser.userID }, process.env.JWT_SECRET);
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: false,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-    });
+    
+    const token = jwt.sign(
+      { id: FindUser._id }, // Use '_id' from MongoDB
+      process.env.JWT_SECRET,
+      { expiresIn: '3d' } // Optional expiry
+    );
+    
     res.status(200).json({ success: true, message: 'Login successfully', user: FindUser, token });
   } catch (error) {
     console.log(error);
@@ -68,5 +69,6 @@ const Logout = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 
 export { Register, Login, Logout };

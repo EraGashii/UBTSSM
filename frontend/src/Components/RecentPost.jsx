@@ -1,7 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { get } from '../services/Endpoint';
-// const BaseUrl = 'http://localhost:5173';nashta osht mir
 const BaseUrl = 'http://localhost:8000';
 
 

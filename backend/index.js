@@ -51,11 +51,13 @@ DBCon();
 app.use('/auth', AuthRouters);
 app.use('/blog', BlogsRouters);
 app.use('/users', UsersRoutes);
-app.use('/users/profile', profileRoutes);
+// app.use('/users/profile', profileRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/department', DepartmentRoutes);
 app.use('/leave', LeaveRoutes);
 app.use('/salaries', SalariesRoutes); // <-- Add this line for salary routes
+app.use('/uploads', express.static('uploads'));
+app.use('/profile', profileRoutes);
 // app.use('/user', employeeRoutes);
 
 // Start server
